@@ -11,10 +11,13 @@
   "dependencies": {
     "@quasar/extras": "^1.0.0",
     "core-js": "^3.6.5",
+    "firebase": "8.2.10",
+    "node": "^12.22.1",
     "quasar": "^2.0.0"
   },
   "devDependencies": {
-    "@quasar/app": "^3.0.0"
+    "@quasar/app": "^3.0.0",
+    "firebase-tools": "9.16.6"
   },
   "browserslist": [
     "last 10 Chrome versions",
@@ -31,5 +34,12 @@
     "node": ">= 13.14.0",
     "npm": ">= 6.13.4",
     "yarn": ">= 1.21.1"
-  }
+  },
+  "main": ".postcssrc.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://ofekdev1593572@bitbucket.org/flashdev-labs/flashyard.git"
+  },
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/flashdev-labs/flashyard#readme"
 }

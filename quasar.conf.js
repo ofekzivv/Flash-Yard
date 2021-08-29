@@ -1,31 +1,15 @@
-/*
- * This file runs in a Node context (it's NOT transpiled by Babel), so use only
- * the ES6 features that are supported by your Node version. https://node.green/
- */
-
-// Configuration for your app
-// https://v2.quasar.dev/quasar-cli/quasar-conf-js
 
 const { configure } = require('quasar/wrappers');
 
 module.exports = configure(function (ctx) {
   return {
-    // https://v2.quasar.dev/quasar-cli/supporting-ts
     supportTS: false,
 
-    // https://v2.quasar.dev/quasar-cli/prefetch-feature
-    // preFetch: true,
-
-    // app boot file (/src/boot)
-    // --> boot files are part of "main.js"
-    // https://v2.quasar.dev/quasar-cli/boot-files
     boot: [
+      'serverconection'
     ],
 
-    // https://v2.quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
-    css: [
-      'app.scss'
-    ],
+    css: ['app.scss'],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [

@@ -52,9 +52,48 @@ console.info('[Quasar] Running SPA.')
 const publicPath = ``
 
 
-async function start ({ app, router }) {
+async function start ({ app, router }, bootFiles) {
   
 
+  
+  let hasRedirected = false
+  const redirect = url => {
+    hasRedirected = true
+    const normalized = Object(url) === url
+      ? router.resolve(url).fullPath
+      : url
+
+    window.location.href = normalized
+  }
+
+  const urlPath = window.location.href.replace(window.location.origin, '')
+
+  for (let i = 0; hasRedirected === false && i < bootFiles.length; i++) {
+    try {
+      await bootFiles[i]({
+        app,
+        router,
+        
+        ssrContext: null,
+        redirect,
+        urlPath,
+        publicPath
+      })
+    }
+    catch (err) {
+      if (err && err.url) {
+        window.location.href = err.url
+        return
+      }
+
+      console.error('[Quasar] boot error:', err)
+      return
+    }
+  }
+
+  if (hasRedirected === true) {
+    return
+  }
   
 
   app.use(router)
@@ -76,5 +115,17 @@ async function start ({ app, router }) {
 
 createQuasarApp(createApp, quasarUserOptions)
 
-  .then(start)
+  .then(app => {
+    return Promise.all([
+      
+      import(/* webpackMode: "eager" */ 'boot/serverconection')
+      
+    ]).then(bootFiles => {
+      const boot = bootFiles
+        .map(entry => entry.default)
+        .filter(entry => typeof entry === 'function')
+
+      start(app, boot)
+    })
+  })
 
