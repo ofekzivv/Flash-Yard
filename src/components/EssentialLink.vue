@@ -1,15 +1,18 @@
 <template>
+  <div>
+
+
   <q-item
     clickable
     tag="a"
     target="_blank"
-    :href="link"
+    @click="this.$router.push(link)"
   >
     <q-item-section
       v-if="icon"
       avatar
     >
-      <q-icon :name="icon" />
+      <q-icon :name="icon" style="color: #DA0018" />
     </q-item-section>
 
     <q-item-section>
@@ -19,6 +22,8 @@
       </q-item-label>
     </q-item-section>
   </q-item>
+    <q-separator />
+  </div>
 </template>
 
 <script>
