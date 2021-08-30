@@ -11,13 +11,6 @@
  **/
 
 
-import { createApp } from 'vue'
-
-
-
-
-
-
 
 import '@quasar/extras/roboto-font/roboto-font.css'
 
@@ -35,11 +28,22 @@ import 'quasar/dist/quasar.sass'
 import 'src/css/app.scss'
 
 
-import createQuasarApp from './app.js'
-import quasarUserOptions from './quasar-user-options.js'
+import Vue from 'vue'
+import createApp from './app.js'
 
 
 
+
+import qboot_Bootserverconection from 'boot/serverconection'
+
+
+
+
+
+
+
+Vue.config.devtools = true
+Vue.config.productionTip = false
 
 
 
@@ -52,7 +56,9 @@ console.info('[Quasar] Running SPA.')
 const publicPath = ``
 
 
-async function start ({ app, router }, bootFiles) {
+async function start () {
+  const { app, store, router } = await createApp()
+
   
 
   
@@ -60,20 +66,26 @@ async function start ({ app, router }, bootFiles) {
   const redirect = url => {
     hasRedirected = true
     const normalized = Object(url) === url
-      ? router.resolve(url).fullPath
+      ? router.resolve(url).route.fullPath
       : url
 
     window.location.href = normalized
   }
 
   const urlPath = window.location.href.replace(window.location.origin, '')
+  const bootFiles = [qboot_Bootserverconection]
 
   for (let i = 0; hasRedirected === false && i < bootFiles.length; i++) {
+    if (typeof bootFiles[i] !== 'function') {
+      continue
+    }
+
     try {
       await bootFiles[i]({
         app,
         router,
-        
+        store,
+        Vue,
         ssrContext: null,
         redirect,
         urlPath,
@@ -96,15 +108,16 @@ async function start ({ app, router }, bootFiles) {
   }
   
 
-  app.use(router)
-  
-
   
 
     
 
     
-      app.mount('#q-app')
+
+    
+      new Vue(app)
+    
+
     
 
     
@@ -113,19 +126,4 @@ async function start ({ app, router }, bootFiles) {
 
 }
 
-createQuasarApp(createApp, quasarUserOptions)
-
-  .then(app => {
-    return Promise.all([
-      
-      import(/* webpackMode: "eager" */ 'boot/serverconection')
-      
-    ]).then(bootFiles => {
-      const boot = bootFiles
-        .map(entry => entry.default)
-        .filter(entry => typeof entry === 'function')
-
-      start(app, boot)
-    })
-  })
-
+start()

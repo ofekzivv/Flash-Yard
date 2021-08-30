@@ -1,13 +1,11 @@
 <template>
-  <router-view />
+  <div id="q-app">
+    <router-view/>
+  </div>
 </template>
 <script>
-import { defineComponent } from 'vue';
-import fbi from './middleware/firebase'
-export default defineComponent({
+export default {
   name: 'App',
-  created() {
-    fbi.db()
-  }
-})
+
+}
 </script>

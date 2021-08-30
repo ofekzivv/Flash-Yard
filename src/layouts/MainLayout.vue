@@ -34,11 +34,11 @@
         </q-item-label>
         <q-separator size="2px" color="#444941"/>
 
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
+<!--        <EssentialLink-->
+<!--          v-for="link in essentialLinks"-->
+<!--          :key="link.title"-->
+<!--          v-bind="link"-->
+<!--        />-->
       </q-list>
     </q-drawer>
 
@@ -74,9 +74,9 @@ const linksList = [
   },
 ];
 
-import { defineComponent, ref } from 'vue'
+// import { defineComponent, ref } from 'vue'
 
-export default defineComponent({
+export default ({
   name: 'MainLayout',
 
   components: {
