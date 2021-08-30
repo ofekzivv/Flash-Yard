@@ -4,18 +4,9 @@ import users from './users'
 
 Vue.use(Vuex)
 
-
-
-export default function (/* { ssrContext } */) {
-  const Store = new Vuex.Store({
-    modules: {
+export default new Vuex.Store({
+  strict: process.env.NODE_ENV !== 'production',
+  modules: {
     users
-    },
-
-    // enable strict mode (adds overhead!)
-    // for dev mode and --debug builds only
-    strict: process.env.DEBUGGING
-  })
-
-  return Store
-}
+  }
+})
