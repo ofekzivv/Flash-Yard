@@ -1,7 +1,8 @@
-import state from './state'
-import * as getters from './getters'
-import * as mutations from './mutations'
-import * as actions from './actions'
+import state from './users.state';
+import mutations from './users.mutations';
+import actions from './users.actions';
+import getters from './users.getters'
+
 
 export default {
   namespaced: true,
