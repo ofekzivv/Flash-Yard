@@ -2,11 +2,12 @@
   <div class="q-pa-md justify-center">
     <P class="textHeader">באיזה יום תרצו להגיע ? </P>
 
-    <DatePicker locale="he" color="green" :disabled-dates='options' v-model="date" :model-config="{type: 'string', mask: 'D'}" />
+    <DatePicker locale="he" color="green" :disabled-dates='disableWeekdays' v-model="date"  :min-date='new Date()' :model-config="{type: 'string', mask: 'D/M/YYYY'}" />
     <div class="q-pa-md row flex items-baseline">
       <P>כמות משתתפים : </P>
+      {{date}}
       <q-input
-        v-model.number="model"
+        v-model.number="numberOfppl"
         type="number"
         filled
         style="max-width: 50px;"
@@ -30,12 +31,14 @@
       </q-item>
     </q-list>
     <q-btn @click="slika" color="deep-orange" glossy label="מעבר לתשלום" />
-
+{{options}}
   </div>
 </template>
 
 <script>
 import DatePicker from 'v-calendar/lib/components/date-picker.umd'
+import {mapActions,mapState,mapMutations} from "vuex";
+
 export default {
   name: "OrderComp",
   components:{
@@ -43,21 +46,36 @@ export default {
   },
   data() {
     return {
+      name : 'elad',
       notes: [],
-      model: 10,
+      numberOfppl: 10,
       date: new Date(),
       noteText: '',
-      options: [{ weekdays: [1, 7] },{ days: [4,6,25]}],
+      // options: [{ weekdays: [1, 7] } ],
+      localOrder : {}
 
     }
   },
+  computed:{...mapState("test",['disableWeekdays'])},
       methods: {
         addNote() {
           this.notes.push(this.noteText)
           this.noteText = ''
         },
         slika() {
-          this.options[1].days.push(parseInt(this.date))
+          let day = parseInt(this.date.split("/")[0])
+          let month =parseInt(this.date.split("/")[1])
+          let year = parseInt(this.date.split("/")[2])
+          this.options.push(new Date(year,month,day))
+          this.localOrder = [{
+              name : this.name,
+            date : this.date,
+            amountOfppl : this.numberOfppl,
+            notes : this.notes
+
+          }]
+         localStorage.setItem('key', JSON.stringify(this.localOrder)  )
+          console.log(this.options)
         },
 
       },

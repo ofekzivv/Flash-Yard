@@ -1,10 +1,23 @@
 <template>
+  <div>
+    ffff
+    <Calendar/>
+  </div>
 
 </template>
 
 <script>
+import Calendar from "components/MyProfile/Calendar";
 export default {
-  name: "MyProfile"
+  name: "MyProfile",
+  components: {Calendar},
+
+  data(){
+    return{
+
+    }
+  },
+
 }
 </script>
 

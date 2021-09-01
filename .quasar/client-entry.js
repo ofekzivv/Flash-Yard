@@ -50,13 +50,7 @@ Vue.config.productionTip = false
 console.info('[Quasar] Running SPA.')
 
 
-import VCalendar from 'v-calendar';
 
-// Use v-calendar & v-date-picker components
-Vue.use(VCalendar, {
-  componentPrefix: 'vc',  // Use <vc-calendar /> instead of <v-calendar />
-  // ...other defaults
-});
 
 
 const publicPath = ``
@@ -65,9 +59,9 @@ const publicPath = ``
 async function start () {
   const { app, store, router } = await createApp()
 
+  
 
-
-
+  
   let hasRedirected = false
   const redirect = url => {
     hasRedirected = true
@@ -112,23 +106,23 @@ async function start () {
   if (hasRedirected === true) {
     return
   }
+  
 
+  
 
+    
 
+    
 
-
-
-
-
-
+    
       new Vue(app)
+    
 
+    
 
+    
 
-
-
-
-
+  
 
 }
 

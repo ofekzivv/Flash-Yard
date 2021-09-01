@@ -70,12 +70,12 @@ export default {
         {
           title: 'הפרופיל שלי',
           icon: 'account_circle',
-          link: '/pages/MyProfile.vue'
+          link: 'MyProfile'
         },
         {
           title: 'שף ? התחל כאן!',
           icon: 'local_dining',
-          link: '/pages/AddYard.vue'
+          link: 'addYard'
         },
         {
           title: 'קצת עלינו',
