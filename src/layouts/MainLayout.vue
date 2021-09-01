@@ -11,11 +11,18 @@
           @click="toggleLeftDrawer"
         />
 
-        <q-toolbar-title>
-         FlashYard
+        <q-toolbar-title class="flash-title">
+          FlashYard
         </q-toolbar-title>
 
-        <div>  FlashYard logo ?</div>
+        <div> FlashYard logo ?</div>
+        <q-btn v-if="$route.fullPath.includes('/sumOrder')"
+               v-go-back.single
+               label="Back"
+               flat
+               dense
+               icon="arrow_back"
+        />
       </q-toolbar>
     </q-header>
     <q-drawer
@@ -29,7 +36,7 @@
           header
           class="text-grey-8"
         >
-      "השם שלך כאן"
+          "השם שלך כאן"
         </q-item-label>
         <q-separator size="2px" color="#444941"/>
         <q-item
@@ -44,19 +51,19 @@
             v-if="item.icon"
             avatar
           >
-            <q-icon :name="item.icon" style="color: #DA0018" />
+            <q-icon :name="item.icon" style="color: #DA0018"/>
           </q-item-section>
 
           <q-item-section>
             <q-item-label>{{ item.title }}</q-item-label>
           </q-item-section>
         </q-item>
-        <q-separator />
+        <q-separator/>
       </q-list>
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view/>
     </q-page-container>
   </q-layout>
 </template>
@@ -68,7 +75,7 @@ export default {
     return {
       leftDrawerOpen: false,
       essentialLinks: this.linksList,
-      linksList : [
+      linksList: [
         {
           title: 'הפרופיל שלי',
           icon: 'account_circle',
@@ -97,7 +104,12 @@ export default {
     toggleLeftDrawer() {
       this.leftDrawerOpen = !this.leftDrawerOpen
     }
-
   }
 }
 </script>
+
+<style scoped>
+.flash-title{
+text-align: center;
+}
+</style>
