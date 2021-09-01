@@ -10,9 +10,11 @@
           aria-label="Menu"
           @click="toggleLeftDrawer"
         />
+
         <q-toolbar-title>
          FlashYard
         </q-toolbar-title>
+
         <div>  FlashYard logo ?</div>
       </q-toolbar>
     </q-header>

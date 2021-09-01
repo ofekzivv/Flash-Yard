@@ -5,7 +5,7 @@
     label="ימים קבועים שבהם אני לא עובד"
   >
   <div class="q-gutter-sm">
-        <q-checkbox size="1.5rem" v-for="day in days" v-model="nonWorkDays" :val="day.num" :label="day.string" color="teal" />
+        <q-checkbox size="1.5rem" v-for="day in days" :key="day" v-model="nonWorkDays" :val="day.num" :label="day.string" color="teal" />
     <q-btn color="primary" label="עדכן" size="0.6rem" @click="setDisableDays(nonWorkDays)" />
       </div>
 
