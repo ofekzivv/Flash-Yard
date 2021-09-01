@@ -6,17 +6,17 @@ const  authentication = () => {
   return firebase.auth();
 }
 
-const FBIinit = config => {
+const FBIInit = config => {
   return firebase.initializeApp(config)
 }
 
-const db = () => firebase.firestore()
+const DB = () => firebase.firestore()
 
 export default {
   firebase,
-  db,
+  DB,
   authentication,
-  FBIinit,
+  FBIInit,
 }
 
 

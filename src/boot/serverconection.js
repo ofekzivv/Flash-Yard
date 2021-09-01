@@ -11,8 +11,8 @@ export default () => {
     appId: "1:1022234337539:web:84bd0e58e95ff59371c936",
     measurementId: "G-K0KR431HDG"
   }
-
-  fbi.firebase.initializeApp(firebaseConfig)
+  fbi.FBIInit(firebaseConfig)
+  // fbi.firebase.initializeApp(firebaseConfig)
 }
 //
 // firebaseInstance.firebase.auth().onAuthStateChanged(user => {

@@ -1,10 +1,14 @@
 <template>
-
+  <addYardForm></addYardForm>
 </template>
 
 <script>
+import addYardForm from "components/addYard/addYardForm";
 export default {
-  name: "AddYard"
+  name: "AddYard",
+  components : {
+    addYardForm
+  }
 }
 </script>
 
