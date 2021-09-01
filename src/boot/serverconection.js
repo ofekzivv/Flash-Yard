@@ -1,5 +1,5 @@
 import fbi from "../middleware/firebase"
-
+import firebaseInstance from '../middleware/firebase/index'
 
 export default () => {
 
@@ -15,6 +15,14 @@ export default () => {
 
   fbi.firebase.initializeApp(firebaseConfig)
 }
+//
+// firebaseInstance.firebase.auth().onAuthStateChanged(user => {
+//
+//   window.user = user
+//
+//
+//
+// })
 
 
 

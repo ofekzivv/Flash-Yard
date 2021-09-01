@@ -6,62 +6,77 @@
       </q-card-section>
 
       <q-separator/>
+      <br>
 
       <div class="q-pa-md" style="max-width: 400px">
         <!--        @submit="onSubmit"-->
         <q-form
           class="q-gutter-md"
-        >
-          <q-input
-            filled
-            v-model="Email"
-            label='דוא"ל'
-            lazy-rules
-            :rules="[ val => val && val.length > 0 || 'אנא מלא/י דואר אלקטרוני']"
-          />
 
-          <q-input
-            filled
-            type="Password"
-            v-model="Password"
-            label="סיסמה"
-            lazy-rules
-            :rules="[
+        >
+          <div>
+            <q-avatar icon="person" size="75px"/>
+            <q-input
+              style=" display:inline-grid; width:72%"
+              filled
+              v-model="Email"
+              label='דוא"ל'
+              lazy-rules
+              :rules="[ val => val && val.length > 0 || 'אנא מלא/י דואר אלקטרוני']"
+            />
+          </div>
+
+          <div>
+            <q-avatar icon="vpn_key" size="75px"/>
+            <q-input
+              style=" display:inline-grid; width:72%"
+              filled
+              type="Password"
+              v-model="Password"
+              label="סיסמה"
+              lazy-rules
+              :rules="[
           val => val !== null && val !== '' || 'הקש/י סיסמה',
         ]"
-          />
+            />
+
+          </div>
 
           <q-btn flat label="שכחתי סיסמה"/>
           <!--          <q-toggle v-model="accept" label="אני מסכים לתנאי השימוש"/>-->
 
           <div align="center">
-            <q-btn @click="signInWithEmailAndPassword(Email,Password)" label="התחבר/י" type="submit" class="text-white" style="background-color: #DA0018"/>
+            <q-btn @click="signInWithEmailAndPassword(Email,Password)" label="התחבר/י" type="submit" class="text-white"
+                   style="background-color: #DA0018"/>
           </div>
 
-          <q-btn flat  label="לא רשום? לחץ כאן להרשמה" @click="localChangeSignUp()"/>
+          <q-btn flat label="לא רשום? לחץ כאן להרשמה" @click="localChangeSignUp()"/>
+<div>
+          <q-separator style="display: inline-grid; width:45%"/> <h7>או</h7> <q-separator style="display: inline-grid; width:45%"/>
 
-          <q-separator/>
-
+</div>
           <q-card-actions align="center">
-            <q-btn flat @click="loginWithGoogle()">התחבר עם גוגל</q-btn>
-            <q-btn flat>התחבר עם פייסבוק</q-btn>
+
+            <q-btn @click="loginWithGoogle()" outline rounded color="black" label="התחבר עם גוגל" icon="fab fa-google"/>
+            <q-btn @click="loginWithFacebook()" outline rounded color="black" label="התחבר עם פייסבוק" icon="fab fa-facebook"/>
+
           </q-card-actions>
 
         </q-form>
 
       </div>
 
-
     </q-card>
 
   </div>
 </template>
 
-<!--//todo להוסיף הערה אם המשתמש שרוצה להתחבר לא קיים-->
+<!--//todo להוסיף הערה אם המשתמש שרוצה להתחבר לא קיים, להוסיף קו או-->
 
 <script>
 import firebaseInstance from '../../middleware/firebase/index'
 import {mapState, mapMutations} from 'vuex'
+
 
 export default {
   name: "SignIn",
@@ -105,8 +120,18 @@ export default {
           console.log('error message login', error.message)
         })
     },
-
-
+    loginWithFacebook() {
+      self = this;
+      const provider = new firebaseInstance.firebase.auth.FacebookAuthProvider();
+      firebaseInstance.firebase.auth().signInWithPopup(provider)
+        .then((res) => {
+          window.user = res.user;
+          self.$router.push('/feed')
+        })
+        .catch((error) => {
+          console.log('error message login', error.message)
+        })
+    },
 
     localChangeSignUp() {
       this.changeSignUp()
