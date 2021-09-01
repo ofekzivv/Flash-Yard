@@ -8,6 +8,7 @@ const routes = [
       { path: 'order', component: () => import('pages/Order') },
       { path: 'yardPage', component: () => import('pages/YardPage') },
       { path: 'addYard', component: () => import('pages/AddYard') },
+      { path: 'MyProfile', component: () => import('pages/MyProfile') },
     ]
 
   },
