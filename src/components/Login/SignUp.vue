@@ -35,7 +35,7 @@
 
 
           <q-card-actions align="center">
-            <q-btn @click="createUserWithEmailAndPassword(email,password)" color="primary" label="הרשם"/>
+            <q-btn @click="createUserWithEmailAndPassword(email,password)" class="text-white" style="background-color: #DA0018" label="הירשם"/>
           </q-card-actions>
 
         </q-form>
