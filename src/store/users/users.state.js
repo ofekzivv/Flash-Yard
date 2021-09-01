@@ -1,5 +1,13 @@
 export default {
 
-    signUp: false
+    signUp: false,
+    users: [],
+    newUser: {
+        id:'',
+        firstName:'',
+        lastName:'',
+    },
+    loginUser : {}
+
 
 }

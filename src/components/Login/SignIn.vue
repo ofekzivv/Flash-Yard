@@ -75,7 +75,7 @@
 
 <script>
 import firebaseInstance from '../../middleware/firebase/index'
-import {mapState, mapMutations} from 'vuex'
+import {mapState,mapActions, mapMutations} from 'vuex'
 
 
 export default {
@@ -94,8 +94,8 @@ export default {
   },
 
   methods: {
-
-    ...mapMutations('users', ['changeSignUp']),
+    ... mapActions('users', ['createNewUser']),
+    ...mapMutations('users', ['changeSignUp','']),
 
     signInWithEmailAndPassword(Email, Password) {
       firebaseInstance.firebase.auth().signInWithEmailAndPassword(Email, Password)
@@ -113,6 +113,13 @@ export default {
       const provider = new firebaseInstance.firebase.auth.GoogleAuthProvider();
       firebaseInstance.firebase.auth().signInWithPopup(provider)
         .then((res) => {
+          const userId = res.user.uid
+          const userProf = res.additionalUserInfo.profile
+          const userData = res.user;
+          window.user = userData
+
+          this.createNewUser({userId,userProf})
+
           window.user = res.user;
           self.$router.push('/feed')
         })

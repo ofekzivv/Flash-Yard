@@ -4,6 +4,12 @@ import firestore from "firebase";
 
 //FBI.DB() point to => firebase.firestore()
 
+function createUser(data) {
+  debugger
+  return FBI.DB().collection('users').doc(`${window.user.uid}`).set(data)
+}
+
+
 async function createYard(options) {
   const eventRef = FBI.DB().collection('yards').doc()
   const id = eventRef.id;
@@ -19,23 +25,27 @@ async function createYard(options) {
 
 async function uploadYardsImages(option){
    console.log("option from upload",option)
-
-  debugger
   const storage = FBI.firebase.storage()
   // const yardsRef = storage.ref(`yardsImages/ ${user.uid}`);
   const yardsRef = storage.ref(`yardsImages/ ${Math.random()}`);
-  const yardFolder = yardsRef.child(`${Math.random()}`);
+
 
   const urlArr = []
   for (const image of option.images) {
+    const yardFolder = yardsRef.child(`${Math.random()}`);
     console.log(`image`,image)
-    return yardFolder.put(image).then(() => {
-      return yardFolder.getDownloadURL().then((url) => {
+    let res = await yardFolder.put(image)
+    let url = await res.ref.getDownloadURL()
+       urlArr.push(url)
+    /*return yardFolder.put(image).then(() => {
+      return yardFolder.getDownloadURL()
+          .then((url) => {
         urlArr.push(url)
         return urlArr;
       })
-    });
+    });*/
   }
+  return urlArr;
 
 
 
@@ -44,6 +54,7 @@ async function uploadYardsImages(option){
 
 
 export default {
+  createUser,
   createYard,
-   uploadYardsImages
+  uploadYardsImages
 }
