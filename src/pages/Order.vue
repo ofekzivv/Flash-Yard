@@ -1,10 +1,12 @@
 <template>
-
+<order-comp/>
 </template>
 
 <script>
+import OrderComp from "components/order/OrderComp";
 export default {
-  name: "Order"
+  name: "Order",
+  components: {OrderComp}
 }
 </script>
 

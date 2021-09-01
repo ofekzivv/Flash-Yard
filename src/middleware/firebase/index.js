@@ -11,6 +11,7 @@ const FBIinit = config => {
 }
 
 const db = () => firebase.firestore()
+
 export default {
   firebase,
   db,
