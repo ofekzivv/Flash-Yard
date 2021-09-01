@@ -2,7 +2,6 @@ import fbi from "../middleware/firebase"
 import firebaseInstance from '../middleware/firebase/index'
 
 export default () => {
-
   const firebaseConfig = {
     apiKey: "AIzaSyDHsGvxOotq7C3LOWEBdDclck-n3EvS_6U",
     authDomain: "flash-yard.firebaseapp.com",
