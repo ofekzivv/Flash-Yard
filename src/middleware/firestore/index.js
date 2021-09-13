@@ -13,6 +13,7 @@ function createUser(data) {
 async function createYard(options) {
   const eventRef = FBI.DB().collection('yards').doc()
   const id = eventRef.id;
+  // options.chef = window.user.uid
   eventRef.set(options).then(r=> {
     console.log(r)
   })
