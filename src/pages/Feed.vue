@@ -1,32 +1,61 @@
 <template>
   <div class="feed">
-
-
-    <YardCard/>
-    <YardCard/>
-    <YardCard/>
-    <YardCard/>
-    <YardCard/>
-    <YardCard/>
-    <YardCard/>
-    <YardCard/>
-    <YardCard/>
-    <YardCard/>
-
-
+    <YardCard v-for="yard of this.myYards" :yard="yard"/>
+    <q-img class="loading-circles"  v-if="loading" :src="url"/>
+    <InfiniteLoading @infinite="infiniteHandler">
+      <span class="noMore" slot="no-more">
+    </span>
+    </InfiniteLoading>
   </div>
 </template>
 
 <script>
 import YardCard from "components/Feed/YardCard";
-
+import {mapState, mapActions} from 'vuex'
+import InfiniteLoading from 'vue-infinite-loading'
 
 export default {
   name: "Feed",
-  components: {YardCard},
+  components: {YardCard, InfiniteLoading},
+  computed: {
+    ...mapState('yards', ['yards'])
+  },
   data() {
     return {
-      index: 6
+      myYards: [],
+      startPoint: 0,
+      loading:false,
+      url:'https://i.stack.imgur.com/h6viz.gif'
+    }
+  },
+
+  methods: {
+    ...mapActions('yards', ['readYards']),
+
+    /***********************loadData*****************
+     *load all yards and show them in the feed      *
+     ***********************************************/
+    loadData() {
+      return this.readYards()
+        .then(() => {
+          this.myYards.push(...this.yards)
+          return this.yards.length
+        })
+
+    },
+    /*****************infiniteHandler*****************
+     *this function make infinity scroll pagination   *
+     ***********************************************/
+    async infiniteHandler($state) {
+      const newYards = await this.loadData()
+      if (newYards > 0) {
+
+        this.loading=true
+        return $state.loaded()
+      }
+      this.loading=false
+      return $state.complete()
+
     }
   }
 }
@@ -34,23 +63,14 @@ export default {
 
 <style>
 .feed {
+  margin-left:10%;
+  margin-right:10%;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: repeat(2, 4fr 2fr);
+  grid-template-columns: repeat(auto-fit,minmax(30rem,10rem));
   grid-gap: 2rem;
-  padding: 20px
+  padding: 20px;
+  align-items: center;
+  justify-content: center;
 }
 
-
-.card-tall {
-  grid-row: span 2;
-}
-
-/*@media screen and (max-width: 600px) {*/
-/*  .feed {*/
-/*    grid-template-columns: 1fr 1fr;*/
-
-/*    grid-gap: 1px;*/
-/*  }*/
-/*}*/
 </style>

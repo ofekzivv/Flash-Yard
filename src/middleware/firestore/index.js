@@ -9,22 +9,8 @@ function createUser(data) {
   return FBI.DB().collection('users').doc(`${window.user.uid}`).set(data)
 }
 
-
-async function createYard(options) {
-  const eventRef = FBI.DB().collection('yards').doc()
-  const id = eventRef.id;
-  eventRef.set(options).then(r=> {
-    console.log(r)
-  })
-
-  // await eventRef.set(options).then(()=> {
-  //   const userRef = db.collection(`users`).doc(`${window.user.uid}`)
-  //   userRef.collection('myEventsId').doc(id).set({})
-  // })
-}
-
 async function uploadYardsImages(option){
-   console.log("option from upload",option)
+  console.log("option from upload", option)
   const storage = FBI.firebase.storage()
   // const yardsRef = storage.ref(`yardsImages/ ${user.uid}`);
   const yardsRef = storage.ref(`yardsImages/ ${Math.random()}`);
@@ -33,10 +19,10 @@ async function uploadYardsImages(option){
   const urlArr = []
   for (const image of option.images) {
     const yardFolder = yardsRef.child(`${Math.random()}`);
-    console.log(`image`,image)
+    console.log(`image`, image)
     let res = await yardFolder.put(image)
     let url = await res.ref.getDownloadURL()
-       urlArr.push(url)
+    urlArr.push(url)
     /*return yardFolder.put(image).then(() => {
       return yardFolder.getDownloadURL()
           .then((url) => {
@@ -48,13 +34,10 @@ async function uploadYardsImages(option){
   return urlArr;
 
 
-
 }
-
 
 
 export default {
   createUser,
-  createYard,
   uploadYardsImages
 }
