@@ -25,7 +25,7 @@ async function createYard(options) {
 }
 
 async function uploadYardsImages(option){
-   console.log("option from upload",option)
+  console.log("option from upload", option)
   const storage = FBI.firebase.storage()
   // const yardsRef = storage.ref(`yardsImages/ ${user.uid}`);
   const yardsRef = storage.ref(`yardsImages/ ${Math.random()}`);
@@ -34,7 +34,7 @@ async function uploadYardsImages(option){
   const urlArr = []
   for (const image of option.images) {
     const yardFolder = yardsRef.child(`${Math.random()}`);
-    console.log(`image`,image)
+    console.log(`image`, image)
     let res = await yardFolder.put(image)
     let url = await res.ref.getDownloadURL()
        urlArr.push(url)
@@ -49,13 +49,10 @@ async function uploadYardsImages(option){
   return urlArr;
 
 
-
 }
-
 
 
 export default {
   createUser,
-  createYard,
   uploadYardsImages
 }
