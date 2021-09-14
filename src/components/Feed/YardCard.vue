@@ -1,18 +1,15 @@
 <template>
     <div>
       <div class="card"  :style="{backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.9)),url('https://source.unsplash.com/random')`}" >
-        <div class="card-details">
+        <div class="card-headers">
           <h4 class="card-title">{{ yard.yardName }}</h4>
           <h4 class="card-category">קטגוריה:
             <span   v-for="(category,index) of yard.foodCategory"> {{ category }}
               <span v-if="yard.foodCategory.length>1 && index!==yard.foodCategory.length-1">,</span>
             </span>
           </h4>
-          <p class="card-desc">
-             על החצר: {{ yard.placeDesc }}
-          </p>
         </div>
-        <div class="card-info">
+        <div class="card-details">
           <q-list>
             <q-item>
               <q-item-section avatar>
@@ -39,7 +36,7 @@
 
         </div>
         <button class="card-btn" @click="goToItem(yard.id)">לפרטים נוספים</button>
-    </div>
+        </div>
   </div>
 </template>
 
@@ -104,13 +101,12 @@ export default {
 }
 
 
-.card-info{
+.card-details{
   text-align: left;
   display: block;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 5px;
+  justify-content: center;
+  padding:20px;
+
 }
 
 
@@ -126,9 +122,10 @@ export default {
   margin-right: 10PX;
 }
 
-.card-details {
+.card-headers {
   display: flex;
   flex-direction: column;
+  padding-bottom: 10px;
 }
 
 .card-title {
@@ -146,8 +143,10 @@ export default {
   color: black;
 }
 
-.card-desc {
-  font-size: 16px;
+
+.card:hover {
+
+  /*transform: translateY(0);*/
 }
 
 .card-btn {
@@ -156,6 +155,7 @@ export default {
   color: white;
   border: none;
   padding: 10px 12px;
+  margin-bottom: 15px;
   border-radius: 4px;
   cursor: pointer;
   box-shadow: rgba(3, 8, 20, 0.1) 0 0.15rem 0.5rem, rgba(2, 8, 20, 0.1) 0 0.075rem 0.175rem;

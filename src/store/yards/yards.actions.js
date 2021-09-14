@@ -1,5 +1,6 @@
-import FBI from "../../middleware/firebase/"
-import FS from "../../middleware/firestore/yards"
+import FS from "../../middleware/firestore/"
+import FS_Yards from "../../middleware/firestore/yards"
+
 
 export default {
 
@@ -7,15 +8,12 @@ export default {
    *      get all yards from Firebase             *
    ***********************************************/
   readYards: async({commit})=>{
-    const yards=await FS.getYards()
+    const yards=await FS_Yards.getYards()
     commit('setYards',yards)
 },
 
 
   insertYard : async({ state,commit,dispatch },option)=>{
-     console.log('option',option)
-     console.log('option',option.images)
-    // console.log('option.data',option.data)
     if (option.images) {
        // const url = await FBI.uploadEventImg({id:user.uid, file:option.file})
       const url = await FS.uploadYardsImages({images:option.images})
@@ -25,7 +23,7 @@ export default {
     }
 
     //save to db
-     await FS.createYard(option.data)
+     await FS_Yards.createYard(option.data)
     //save to store
      commit('insertYard',option.data)
   },
@@ -38,7 +36,7 @@ export default {
       yard=state.yards.find(yard=>yard.id===state.editedYardId);
     }
     else {
-      yard=await  FS.getYardById(state.editedYardId)
+      yard=await  FS_Yards.getYardById(state.editedYardId)
     }
     commit('setEditedYard',yard)
 
