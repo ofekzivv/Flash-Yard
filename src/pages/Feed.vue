@@ -66,9 +66,8 @@ export default {
   margin-left:10%;
   margin-right:10%;
   display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(30rem,10rem));
+  grid-template-columns: repeat(auto-fit,minmax(20rem,35rem));
   grid-gap: 2rem;
-  padding: 20px;
   align-items: center;
   justify-content: center;
 }
