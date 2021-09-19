@@ -8,7 +8,7 @@
           round
           icon="lunch_dining"
           aria-label="Menu"
-          @click="toggleLeftDrawer"
+          @click="toggleLeftDrawer()"
         />
 
         <q-toolbar-title class="flash-title">
@@ -45,7 +45,7 @@
           clickable
           tag="a"
           target="_blank"
-          @click="$router.push(item.link)"
+          @click="itemRef(item)"
         >
           <q-item-section
             v-if="item.icon"
@@ -69,6 +69,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   name: 'MainLayout',
   data() {
@@ -94,15 +96,22 @@ export default {
         {
           title: 'התנתק',
           icon: 'logout',
-          link: 'https://forum.quasar.dev'
+          link: 'login'
         },
       ]
     }
   },
-
   methods: {
+    ...mapActions('users',['signOutAction']),
     toggleLeftDrawer() {
       this.leftDrawerOpen = !this.leftDrawerOpen
+    },
+    itemRef(chosenItem){
+      if (chosenItem.title !== "התנתק"){
+        this.$router.push(chosenItem.link)
+      }else{
+        this.signOutAction()
+      }
     }
   }
 }

@@ -11,11 +11,14 @@ const routes = [
       {path: 'payment', component: () => import('pages/payment')},
       { path: 'MyProfile', component: () => import('pages/MyProfile') },
     ]
-
   },
   {
     path: '/login',
     component: () => import('pages/Login')
+  },
+  {
+    path: '/reset',
+    component: () => import('pages/ResetPassword')
   },
   {
     path: '/:catchAll(.*)*',

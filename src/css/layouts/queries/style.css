@@ -1,0 +1,21 @@
+@media (max-width: 767px) {
+  .seperator{
+    display: none;
+    visibility: hidden;
+  }
+  .centerBoxPos{
+    height: 100%;
+    width: 100%;
+  }
+  .boxWidth{
+    width: 100%
+  }
+}
+
+@media (max-width: 400px) {
+  .topSpaceForm{
+    margin-top: 10vh;
+  }
+
+}
+

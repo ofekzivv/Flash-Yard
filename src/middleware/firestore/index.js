@@ -1,11 +1,10 @@
 import FBI from '../../middleware/firebase'
-import firestore from "firebase";
+// import firestore from "firebase";
 
 
 //FBI.DB() point to => firebase.firestore()
 
 function createUser(data) {
-  debugger
   return FBI.DB().collection('users').doc(`${window.user.uid}`).set(data)
 }
 

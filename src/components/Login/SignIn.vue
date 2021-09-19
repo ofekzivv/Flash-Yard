@@ -1,86 +1,85 @@
-<template>
-  <div class="q-pa-md row items-start q-gutter-md" style="justify-content: center">
-    <q-card class="my-card">
-      <q-card-section class="text-white" style="background-color: #DA0018">
+<template >
+
+  <div class=" row items-start q-gutter-md page ">
+<!--    <div>-->
+<!--      <ResetPassword v-if="forgetPass"/>-->
+<!--    </div>-->
+    <q-card class="centerBoxPos colorBox">
+      <q-card-section  class="text-white" style="background-color: #DA0018;">
+        <q-resize-observer @resize="setAtr()"/>
         <div align="center" class="text-h6">Flash Yard</div>
       </q-card-section>
 
-      <q-separator/>
       <br>
 
-      <div class="q-pa-md" style="max-width: 400px">
+      <div class="q-pa-md" >
         <!--        @submit="onSubmit"-->
         <q-form
-          class="q-gutter-md"
+          class="q-gutter-md topSpaceForm"
 
         >
           <div>
             <q-avatar icon="person" size="75px"/>
             <q-input
-              style=" display:inline-grid; width:72%"
+              style=" display:inline-grid; width:73%;"
               filled
               v-model="Email"
               label='דוא"ל'
               lazy-rules
-              :rules="[ val => val && val.length > 0 || 'אנא מלא/י דואר אלקטרוני']"
+              :rules="[ val => /^(([^<>()[\]\\.,;:\s@']+(\.[^<>()\\[\]\\.,;:\s@']+)*)|('.+'))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(val) || 'אנא מלא/י דואר אלקטרוני']"
             />
           </div>
 
           <div>
             <q-avatar icon="vpn_key" size="75px"/>
             <q-input
-              style=" display:inline-grid; width:72%"
+              style=" display:inline-grid; width:72%;"
               filled
               type="Password"
               v-model="Password"
               label="סיסמה"
               lazy-rules
-              :rules="[
-          val => val !== null && val !== '' || 'הקש/י סיסמה',
-        ]"
+              :rules="[ val => val !== null && val.length > 5 || 'הקש/י סיסמה', ]"
             />
 
           </div>
 
-          <q-btn flat label="שכחתי סיסמה"/>
+          <q-btn flat @click="forgetPass()" >
+            <strong>שכחתי סיסמה</strong>
+          </q-btn>
           <!--          <q-toggle v-model="accept" label="אני מסכים לתנאי השימוש"/>-->
 
           <div align="center">
             <q-btn @click="signInWithEmailAndPassword(Email,Password)" label="התחבר/י" type="submit" class="text-white"
                    style="background-color: #DA0018"/>
           </div>
+          <div >
+            <q-btn flat @click="localChangeSignUp()" >
+              לא רשום?&nbsp<strong> לחץ כאן להרשמה  </strong>
+            </q-btn>
+          </div>
 
-          <q-btn flat label="לא רשום? לחץ כאן להרשמה" @click="localChangeSignUp()"/>
-<div>
-          <q-separator style="display: inline-grid; width:45%"/> <h7>או</h7> <q-separator style="display: inline-grid; width:45%"/>
-
-</div>
-          <q-card-actions align="center">
-
+          <q-card-actions align="center" style="margin-top: 5vh">
+          <!--login with facebook require special businnes account and etc...-->
             <q-btn @click="loginWithGoogle()" outline rounded color="black" label="התחבר עם גוגל" icon="fab fa-google"/>
             <q-btn @click="loginWithFacebook()" outline rounded color="black" label="התחבר עם פייסבוק" icon="fab fa-facebook"/>
 
           </q-card-actions>
 
         </q-form>
-
       </div>
-
     </q-card>
-
   </div>
 </template>
 
-<!--//todo להוסיף הערה אם המשתמש שרוצה להתחבר לא קיים, להוסיף קו או-->
 
 <script>
-import firebaseInstance from '../../middleware/firebase/index'
 import {mapState,mapActions, mapMutations} from 'vuex'
-
+import ResetPassword from "pages/ResetPassword";
 
 export default {
   name: "SignIn",
-
+  components: {ResetPassword},
   computed: {
     ...mapState('users', ['signUp']),
   },
@@ -94,60 +93,33 @@ export default {
   },
 
   methods: {
-    ... mapActions('users', ['createNewUser']),
-    ...mapMutations('users', ['changeSignUp','']),
+    ... mapActions('users', ['loginUserWithEmail','loginGoogle']),
+    ...mapMutations('users', ['changeSignUp']),
 
-    signInWithEmailAndPassword(Email, Password) {
-      firebaseInstance.firebase.auth().signInWithEmailAndPassword(Email, Password)
-        .then((userCredential) => {
-          window.user = userCredential.user
-          this.$router.push('/feed')
-        })
-        .catch((error) => {
-          console.log(error.message)
-        });
+    async signInWithEmailAndPassword(Email, Password) {
+      await this.loginUserWithEmail({Email,Password})
+      await this.$router.push('/feed')
     },
-
-    loginWithGoogle() {
-      self = this;
-      const provider = new firebaseInstance.firebase.auth.GoogleAuthProvider();
-      firebaseInstance.firebase.auth().signInWithPopup(provider)
-        .then((res) => {
-          const userId = res.user.uid
-          const userProf = res.additionalUserInfo.profile
-          const userData = res.user;
-          window.user = userData
-
-          this.createNewUser({userId,userProf})
-
-          window.user = res.user;
-          self.$router.push('/feed')
-        })
-        .catch((error) => {
-          console.log('error message login', error.message)
-        })
-    },
-    loginWithFacebook() {
-      self = this;
-      const provider = new firebaseInstance.firebase.auth.FacebookAuthProvider();
-      firebaseInstance.firebase.auth().signInWithPopup(provider)
-        .then((res) => {
-          window.user = res.user;
-          self.$router.push('/feed')
-        })
-        .catch((error) => {
-          console.log('error message login', error.message)
-        })
+     loginWithGoogle() {
+       this.loginGoogle().then(()=>{
+         this.$router.push('/feed')
+       })
     },
 
     localChangeSignUp() {
-      this.changeSignUp()
+      this.changeSignUp(true)
+    },
 
+      /*it is responsible to place the nav on top of the screen responsively to screen media*/
+    setAtr(){
+      const navPos = document.querySelector('.text-white');
+        if (window.innerWidth <= 1000) navPos.classList.add('fixed-top');
+        else navPos.classList.remove('fixed-top');
+    },
 
+    forgetPass(){
+      this.$router.push('/reset')
     }
-
-
-
 
 // onSubmit () {
 //   if (this.accept !== true) {
@@ -168,13 +140,13 @@ export default {
 //   }
 // },
 
-
-  },
-
-
+  }
 }
+
+
 </script>
 
 <style scoped>
+
 
 </style>
