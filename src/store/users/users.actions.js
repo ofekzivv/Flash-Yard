@@ -4,6 +4,7 @@ import firebase from "firebase";
 import auth from "../../middleware/firestore/auth"
 import fbi from "../../middleware/firebase";
 import {error} from "vue-infinite-loading/src/utils";
+
 export default {
 
   createNewUser : async ({ },option)=> {

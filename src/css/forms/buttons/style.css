@@ -1,4 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Karantina&family=Rubik:ital,wght@1,900&display=swap');
+
 .btnAction{
   background-color: #DA0018;
   margin-bottom: 3vh;
 }
+
+.btn-grad {
+  width: 200px;
+  font-size: 16px;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  margin: 20px;
+  height: 55px;
+  text-align:center;
+  border: none;
+  background-size: 300% 100%;
+  border-radius: 50px;
+  /*moz-transition: all .4s ease-in-out;*/
+  /*-o-transition: all .4s ease-in-out;*/
+  /*-webkit-transition: all .4s ease-in-out;*/
+  /*transition: all .4s ease-in-out;*/
+}
+
+.btn-grad:hover {
+  background-position: 100% 0;
+  /*moz-transition: all .4s ease-in-out;*/
+  /*-o-transition: all .4s ease-in-out;*/
+  /*-webkit-transition: all .4s ease-in-out;*/
+  /*transition: all .4s ease-in-out;*/
+}
+
+.btn-grad:focus {
+  outline: none;
+}
+
+.btn-grad.myColor {
+  font-family: 'Rubik', sans-serif;
+  background-image: linear-gradient(to right, #eb3941, #3e2222, #970707, #e85a19);
+  box-shadow: 0 4px 15px 0 rgba(229, 66, 10, 0.75);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+

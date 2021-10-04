@@ -1,3 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Birthstone&family=Palanquin+Dark&display=swap&family=Karantina&family=Rubik:ital,wght@1,900&display=swap');
+
+html, body {
+  font-family: 'Palanquin Dark', sans-serif;
+}
+#app {
+  font-family: 'Palanquin Dark', sans-serif;
+}
 /*this class is responsible on centering horizontal and vertical his children with Flexbox*/
 .page{
   display: flex;
@@ -20,13 +28,12 @@
   box-shadow: 7px 5px 5px rgb(140 140 140);
   background: #FFFAF0;
 }
-.seperator{
-  display: inline-grid;
-}
 .topSpaceForm{
   margin-top: 5vh;
 }
 .boxWidth{
   width: 25%
 }
-
+.seperator{
+  display: inline-grid;
+}

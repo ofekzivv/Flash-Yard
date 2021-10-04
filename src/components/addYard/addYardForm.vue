@@ -85,7 +85,7 @@ export default {
         location:'',
         pricePerHead:'',
         foodCategory:[],
-        placeDesc:'',
+        placeDesc:''
       },
       images: [],
 

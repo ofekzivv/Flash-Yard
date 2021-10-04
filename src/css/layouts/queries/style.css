@@ -10,12 +10,32 @@
   .boxWidth{
     width: 100%
   }
+  .yardContainer{
+   flex-direction: column !important;
+    display: block !important;
+  }
+  .containerCarousel{
+    width: 70vw !important;
+  }
+  .btn-grad{
+    height: 30px;
+    width: 100px;
+  }
+  .btn-grad.myColor{
+    margin-bottom: 15%;
+  }
+  .YardBG{
+    height: 100%;
+  }
 }
 
 @media (max-width: 400px) {
   .topSpaceForm{
     margin-top: 10vh;
   }
-
+  .yardContainer{
+    flex-direction: column !important;
+    display: block;
+  }
 }
 

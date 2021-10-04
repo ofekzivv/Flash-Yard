@@ -1,5 +1,4 @@
 import fbi from "../middleware/firebase"
-// import firebaseInstance from '../middleware/firebase/index'
 
 export default () => {
   const firebaseConfig = {
