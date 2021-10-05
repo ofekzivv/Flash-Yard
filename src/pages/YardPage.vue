@@ -110,7 +110,7 @@ export default {
   direction: ltr;
 }
 .YardBG{
-  background: #BDBDBD;
+  background: #d9c8b3;
 }
 .showPreview {
   flex-wrap: wrap;
