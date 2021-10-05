@@ -8,13 +8,13 @@ export default {
    ******************************************************************/
   setEditedYard: ((state, yard) => {
     state.editedYard = {...yard}
-    // console.log(state.editedYard)
   }),
   /***********************setYards****************
    *      set the state.yards                    *
    ***********************************************/
   setYards: ((state, yards) => {
-    state.yards = yards
+    state.yardsCount = !!(yards.length)
+    state.yards = state.yards.concat(yards)
   }),
 
 

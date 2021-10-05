@@ -1,9 +1,9 @@
 <template>
   <div class="feed">
-    <YardCard v-for="yard of this.myYards" :yard="yard"/>
-    <q-img class="loading-circles"  v-if="loading" :src="url"/>
+    <YardCard v-for="yard of myYards" :yard="yard"/>
     <InfiniteLoading @infinite="infiniteHandler">
       <span class="noMore" slot="no-more">
+      אין חצרות נוספות
     </span>
     </InfiniteLoading>
   </div>
@@ -18,14 +18,12 @@ export default {
   name: "Feed",
   components: {YardCard, InfiniteLoading},
   computed: {
-    ...mapState('yards', ['yards'])
+    ...mapState('yards', ['yards', 'yardsCount'])
   },
   data() {
     return {
       myYards: [],
-      startPoint: 0,
-      loading:false,
-      url:'https://i.stack.imgur.com/h6viz.gif'
+      loading: false,
     }
   },
 
@@ -38,35 +36,45 @@ export default {
     loadData() {
       return this.readYards()
         .then(() => {
-          this.myYards.push(...this.yards)
-          return this.yards.length
+          if (this.yardsCount) {
+            this.myYards = [...this.yards]
+            return true;
+          }
+          return false;
         })
 
     },
     /*****************infiniteHandler*****************
-     *this function make infinity scroll pagination   *
-     ***********************************************/
+     *this function make infinity scroll pagination  *
+     ************************************************/
     async infiniteHandler($state) {
-      const newYards = await this.loadData()
-      if (newYards > 0) {
-
-        this.loading=true
-        return $state.loaded()
+      if (this.yardsCount) {
+        const newYards = await this.loadData()
+        if (newYards) {
+          this.loading = true
+          return $state.loaded()
+        }
       }
-      this.loading=false
+      this.loading = false
       return $state.complete()
-
     }
+  },
+ //todo fix get error 404
+  created() {
+    this.myYards = [...this.yards]
   }
+
+
 }
 </script>
 
 <style>
 .feed {
-  margin-left:10%;
-  margin-right:10%;
+  margin-left: 10%;
+  margin-right: 10%;
   display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(20rem,35rem));
+  grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+  /*grid-template-columns: 1fr 1fr;*/
   grid-gap: 2rem;
   align-items: center;
   justify-content: center;

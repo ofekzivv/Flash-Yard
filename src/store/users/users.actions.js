@@ -23,6 +23,7 @@ export default {
     try {
       // Sign-out successful.
      await auth.logOutFB();
+
        if (state.signUp){
          commit('changeSignUp', false)
       }

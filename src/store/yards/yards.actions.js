@@ -13,19 +13,19 @@ export default {
 },
 
 
-  insertYard : async({ state,commit,dispatch },option)=>{
-    if (option.images) {
-       // const url = await FBI.uploadEventImg({id:user.uid, file:option.file})
-      const url = await FS.uploadYardsImages({images:option.images})
+  insertYard : async({ state,commit,dispatch },options)=>{
+    const docId= FS_Yards.createYardId()
+      const url = await FS.uploadYardsImages({images:options.images,yardId:docId})
       console.log("url",url)
-      option.data.imagesUrl = url;
+      options.data.imagesUrl = url;
+      options.data.cover=url[options.data.cover]
 
-    }
+
 
     //save to db
-     await FS_Yards.createYard(option.data)
+     await FS_Yards.createYard(options.data,docId)
     //save to store
-     commit('insertYard',option.data)
+     commit('insertYard',options.data)
   },
   /***************setEditedYardById****************
    *     set the EditedYard                       *

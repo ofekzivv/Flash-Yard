@@ -10,6 +10,7 @@ const routes = [
       {path: 'sumOrder', component: () => import('pages/sumOrder')},
       {path: 'payment', component: () => import('pages/payment')},
       { path: 'MyProfile', component: () => import('pages/MyProfile') },
+      { path: 'Test', component: () => import('pages/Test') }
     ]
   },
   {
