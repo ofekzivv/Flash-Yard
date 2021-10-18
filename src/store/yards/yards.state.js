@@ -1,6 +1,6 @@
 export default {
   yards : [],
-
+  yardsCount:true,
   editedYardId : '',
 
   editedYard : {

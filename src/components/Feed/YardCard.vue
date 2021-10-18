@@ -1,6 +1,7 @@
 <template>
     <div>
-      <div class="card"  :style="{backgroundImage: `linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.9)),url('https://source.unsplash.com/random')`}" >
+      <div class="card"  :style="{backgroundImage:`linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.9)),
+      url(${yard.cover})`}">
         <div class="card-headers">
           <h4 class="card-title">{{ yard.yardName }}</h4>
           <h4 class="card-category">קטגוריה:
@@ -10,27 +11,27 @@
           </h4>
         </div>
         <div class="card-details">
-          <q-list>
+          <q-list class="-horizontal">
             <q-item>
               <q-item-section avatar>
                 <q-avatar class="icon" color="black" text-color="white" icon="room" />
               </q-item-section>
 
-              <q-item-section class="icon-text">מיקום: {{yard.location}}</q-item-section>
+              <q-item-section class="icon-text">{{yard.location}}</q-item-section>
             </q-item>
             <q-item>
               <q-item-section avatar>
                 <q-avatar class="icon"  color="black" text-color="white" icon="fas fa-user-alt icon " />
               </q-item-section>
 
-              <q-item-section class="icon-text">מס' משתתפים: {{yard.minPeople}}-{{yard.maxPeople}}</q-item-section>
+              <q-item-section class="icon-text"> {{yard.peopleRange.min}}-{{yard.peopleRange.max}}</q-item-section>
             </q-item>
             <q-item>
               <q-item-section avatar>
                 <q-avatar class="icon" color="black" text-color="white" icon="fas fa-shekel-sign icon" />
               </q-item-section>
 
-              <q-item-section class="icon-text">מחיר לסועד: {{yard.pricePerHead}} ש"ח </q-item-section>
+              <q-item-section class="icon-text">{{yard.pricePerHead}} ש"ח </q-item-section>
             </q-item>
           </q-list>
 
@@ -102,7 +103,7 @@ export default {
 
 .card-details{
   text-align: left;
-  display: block;
+  display: flex;
   justify-content: center;
   padding:20px;
 

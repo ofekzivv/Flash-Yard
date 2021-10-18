@@ -37,5 +37,6 @@ export default {
     }
     commit('setEditedYardId',id)
     commit('setEditedYard',yard)
+
   }
 }

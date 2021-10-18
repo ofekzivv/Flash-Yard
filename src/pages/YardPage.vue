@@ -80,6 +80,7 @@ export default {
   },
   computed:{
     ...mapState('yards',['yards','editedYard','editedYardId'])
+
   },
   methods:{
     ...mapActions('yards',['setEditedYardById']),

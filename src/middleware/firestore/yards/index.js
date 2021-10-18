@@ -1,10 +1,9 @@
 import FBI from '../../../middleware/firebase'
 
-let lastDoc = null
 
+let lastDoc = null
 async function getYards() {
-  let db = await FBI.DB().collection('yards')
-    .limit(3)
+  let db = await FBI.DB().collection('yards').limit(3)
   if (lastDoc) {
     db = db.startAfter(lastDoc)
   }
@@ -23,6 +22,10 @@ function getYardById(Id) {
     .then(response => response.data())
     .catch(err => console.error(err))
 }
+function createYardId(){
+  return   FBI.DB().collection('yards').doc().id
+}
+
 async function createYard(options) {
   // await FBI.DB().collection('yards').doc(id).set(options)
   // return FBI.DB().collection('users').doc(window.user.uid).update('yardId',id)
@@ -37,5 +40,6 @@ async function createYard(options) {
 export default {
   getYards,
   getYardById,
-  createYard
+  createYard,
+  createYardId,
 }

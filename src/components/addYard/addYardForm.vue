@@ -178,6 +178,7 @@ export default {
       })
       this.previewImgs = arr
     },
+     ...mapActions('users',['setUserDataToLocal']),
 
     deleteImg(index) {
       this.previewImgs.splice(index, 1)

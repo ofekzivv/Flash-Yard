@@ -4,6 +4,7 @@
     <q-img class="loading-circles"  v-if="loading" :src="url"/>
     <InfiniteLoading @infinite="infiniteHandler">
       <span class="noMore" slot="no-more">
+      אין חצרות נוספות
     </span>
     </InfiniteLoading>
   </div>
@@ -19,7 +20,7 @@ export default {
   components: {YardCard, InfiniteLoading},
   computed: {
     ...mapState('users',['users','newUser']),
-    ...mapState('yards', ['yards'])
+    ...mapState('yards', ['yards', 'yardsCount'])
   },
   data() {
     return {
@@ -39,47 +40,42 @@ export default {
     loadData() {
       return this.readYards()
         .then(() => {
-          this.myYards.push(...this.yards)
-          return this.yards.length
+          if (this.yardsCount) {
+            this.myYards = [...this.yards]
+            return true;
+          }
+          return false;
         })
     },
     /*****************infiniteHandler*****************
      *this function make infinity scroll pagination   *
      ***********************************************/
     async infiniteHandler($state) {
-      const newYards = await this.loadData()
-      if (newYards > 0) {
-
-        this.loading=true
-        return $state.loaded()
+      if (this.yardsCount) {
+        const newYards = await this.loadData()
+        if (newYards) {
+          this.loading = true
+          return $state.loaded()
+        }
       }
-      this.loading=false
+      this.loading = false
       return $state.complete()
-
-    },
-
-    // async test() {
-    //   setTimeout( async() => {
-    //     await this.setUserDataToLocal()
-    //     console.log(        localStorage.getItem("isAChef")
-    //     )
-    //     console.log(        localStorage.getItem("yardId")
-    //     )
-    //   },4000)
-    // }
-
-  },async created() {
-     // await this.test()
+    }
+  },
+ //todo fix get error 404
+  created() {
+    this.myYards = [...this.yards]
   }
 }
 </script>
 
 <style>
 .feed {
-  margin-left:10%;
-  margin-right:10%;
+  margin-left: 10%;
+  margin-right: 10%;
   display: grid;
-  grid-template-columns: repeat(auto-fit,minmax(20rem,35rem));
+  grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+  /*grid-template-columns: 1fr 1fr;*/
   grid-gap: 2rem;
   align-items: center;
   justify-content: center;
