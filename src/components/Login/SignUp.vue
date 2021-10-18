@@ -1,7 +1,8 @@
 <template>
   <div class=" page row items-start q-gutter-md " >
     <q-card class="centerBoxPos colorBox boxWidth" >
-      <q-card-section class="text-white" style="background-color: #DA0018;">
+      <q-card-section class="text-white" style="background:linear-gradient(to right,#c01039,#dc1223 67%,#de1e1e 84%,#e02a19);
+">
         <q-resize-observer @resize="setAtr()"/>
         <div align="center" class="text-h6">הרשמה</div>
       </q-card-section>
@@ -69,7 +70,7 @@
           </div>
 
           <q-card-actions align="center">
-            <q-btn @click="createUserWithEmailAndPassword(email,password,firstName,lastName)" class="text-white btnAction" label="הירשם"/>
+            <q-btn @click="createUserWithEmailAndPassword(email,password,firstName,lastName,isAChef)" class="text-white btnAction" label="הירשם"/>
           </q-card-actions>
 
         </q-form>
@@ -92,20 +93,23 @@ export default {
       email:'',
       password:'',
       firstName:'',
-      lastName:''
-
+      lastName:'',
+      isAChef:false
     }
   },
 
   methods: {
-    ...mapActions('users',['createUserWithEmail']),
+    ...mapActions('users',['createUserWithEmail','setUserDataToLocal']),
     ...mapMutations('users',['changeSignUp']),
 
-    async createUserWithEmailAndPassword(email, password, firstName, lastName) {
-      await this.createUserWithEmail({email, password, firstName, lastName})
+    async createUserWithEmailAndPassword(email, password, firstName, lastName,isAChef) {
+      await this.createUserWithEmail({email, password, firstName, lastName,isAChef})
+      await this.setUserDataToLocal()
       await this.$router.push('/feed')
     },
-
+    /*****************setNavToTop****************
+     *setAtr() is responsive to place the nav on top*
+     ***********************************************/
     setAtr(){
       const navPos = document.querySelector('.text-white');
       if (window.innerWidth <= 1000) navPos.classList.add('fixed-top');

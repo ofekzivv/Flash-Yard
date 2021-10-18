@@ -1,12 +1,12 @@
 export default {
-
     signUp: false,
     users: [],
     newUser: {
         id:'',
         firstName:'',
         lastName:'',
-        email: ''
+        email: '',
+        isAChef: false
     },
     loginUser : {}
 

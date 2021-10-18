@@ -64,8 +64,7 @@ export default {
     goToItem(id) {
       this.setEditedYardId(id)
       this.setEditedYardById()
-      this.$router.push('/YardPage')
-
+      this.$router.push(`/YardPage${id}`)
     },
   },
   created() {
@@ -151,7 +150,7 @@ export default {
 
 .card-btn {
   font-size: 20px;
-  background-color: #C10015;
+  background:linear-gradient(to right,#c01039,#dc1223 67%,#de1e1e 84%,#e02a19);
   color: white;
   border: none;
   padding: 10px 12px;

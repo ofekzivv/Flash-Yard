@@ -18,6 +18,7 @@ export default {
   name: "Feed",
   components: {YardCard, InfiniteLoading},
   computed: {
+    ...mapState('users',['users','newUser']),
     ...mapState('yards', ['yards'])
   },
   data() {
@@ -31,7 +32,7 @@ export default {
 
   methods: {
     ...mapActions('yards', ['readYards']),
-
+    ...mapActions('users', ['setUserDataToLocal']),
     /***********************loadData*****************
      *load all yards and show them in the feed      *
      ***********************************************/
@@ -41,7 +42,6 @@ export default {
           this.myYards.push(...this.yards)
           return this.yards.length
         })
-
     },
     /*****************infiniteHandler*****************
      *this function make infinity scroll pagination   *
@@ -56,7 +56,20 @@ export default {
       this.loading=false
       return $state.complete()
 
-    }
+    },
+
+    // async test() {
+    //   setTimeout( async() => {
+    //     await this.setUserDataToLocal()
+    //     console.log(        localStorage.getItem("isAChef")
+    //     )
+    //     console.log(        localStorage.getItem("yardId")
+    //     )
+    //   },4000)
+    // }
+
+  },async created() {
+     // await this.test()
   }
 }
 </script>

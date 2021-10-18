@@ -22,6 +22,8 @@ export default {
     return state.yards.push(yard)
   }),
 
+
+
   resetEditedYardId: ((state) => state.editedYardId = ''),
 
   resetEditedYard: ((state) => {

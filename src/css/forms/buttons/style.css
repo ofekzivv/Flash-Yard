@@ -1,11 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Karantina&family=Rubik:ital,wght@1,900&display=swap');
 
 .btnAction{
-  background-color: #DA0018;
+  background:linear-gradient(to right,#c01039,#dc1223 67%,#de1e1e 84%,#e02a19);
   margin-bottom: 3vh;
 }
 
-.btn-grad {
+.btn-circSquare {
   width: 200px;
   font-size: 16px;
   font-weight: 600;
@@ -23,7 +23,7 @@
   /*transition: all .4s ease-in-out;*/
 }
 
-.btn-grad:hover {
+.btn-circSquare:hover {
   background-position: 100% 0;
   /*moz-transition: all .4s ease-in-out;*/
   /*-o-transition: all .4s ease-in-out;*/
@@ -31,18 +31,43 @@
   /*transition: all .4s ease-in-out;*/
 }
 
-.btn-grad:focus {
+.btn-circSquare:focus {
   outline: none;
 }
 
-.btn-grad.myColor {
+.btn-circSquare.myColor {
   font-family: 'Rubik', sans-serif;
-  background-image: linear-gradient(to right, #eb3941, #3e2222, #970707, #e85a19);
+  background: linear-gradient(to right,#c01039,#dc1223 67%,#de1e1e 84%,#e02a19);
   box-shadow: 0 4px 15px 0 rgba(229, 66, 10, 0.75);
 }
 
+.btnSquare {
+  font-size: 20px;
+  /*background:linear-gradient(to right,#c01039,#dc1223 67%,#de1e1e 84%,#e02a19);*/
+  color: white;
+  border: none;
+  padding: 0px 12px;
+  margin-bottom: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
 
+.oppositeColor{
+  color: #c01039;
+  border: 1px solid #c01039;
+  /*box-shadow: 0 4px 15px 0 rgba(229, 66, 10, 0.75);*/
+}
 
+myColor{
+  box-shadow: 0 4px 15px 0 rgba(229, 66, 10, 0.75);
+  background: linear-gradient(to right,#c01039,#dc1223 67%,#de1e1e 84%,#e02a19) !important;
+}
+.btnSize{
+  height: 3vw;
+  display: inline-block;
+  vertical-align: middle;
+  line-height: 18px; /* <-- adjust this */
+}
 
 
 

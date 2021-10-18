@@ -24,10 +24,13 @@ function getYardById(Id) {
     .catch(err => console.error(err))
 }
 async function createYard(options) {
+  // await FBI.DB().collection('yards').doc(id).set(options)
+  // return FBI.DB().collection('users').doc(window.user.uid).update('yardId',id)
   const eventRef = FBI.DB().collection('yards').doc()
-  const id = eventRef.id;
+  const yardUid = eventRef.id;
   eventRef.set(options).then(r => {
-    console.log(r)
+    FBI.DB().collection('users').doc(window.user.uid).update('yardId',yardUid)
+    // console.log(r,eventRef.id)
   })
 }
 

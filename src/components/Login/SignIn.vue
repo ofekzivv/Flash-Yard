@@ -5,7 +5,8 @@
 <!--      <ResetPassword v-if="forgetPass"/>-->
 <!--    </div>-->
     <q-card class="centerBoxPos colorBox">
-      <q-card-section  class="text-white" style="background-color: #DA0018;">
+      <q-card-section  class="text-white" style="background:linear-gradient(to right,#c01039,#dc1223 67%,#de1e1e 84%,#e02a19);
+">
         <q-resize-observer @resize="setAtr()"/>
         <div align="center" class="text-h6">Flash Yard</div>
       </q-card-section>
@@ -51,7 +52,8 @@
 
           <div align="center">
             <q-btn @click="signInWithEmailAndPassword(Email,Password)" label="התחבר/י" type="submit" class="text-white"
-                   style="background-color: #DA0018"/>
+                   style="background:linear-gradient(to right,#c01039,#dc1223 67%,#de1e1e 84%,#e02a19);
+"/>
           </div>
           <div >
             <q-btn flat @click="localChangeSignUp()" >
@@ -93,16 +95,24 @@ export default {
   },
 
   methods: {
-    ... mapActions('users', ['loginUserWithEmail','loginGoogle']),
+    ... mapActions('users', ['loginUserWithEmail','loginGoogle','setUserDataToLocal']),
     ...mapMutations('users', ['changeSignUp']),
 
     async signInWithEmailAndPassword(Email, Password) {
-      await this.loginUserWithEmail({Email,Password})
-      await this.$router.push('/feed')
+      try{
+        await this.loginUserWithEmail({Email,Password})
+        await this.setUserDataToLocal()
+        await this.$router.push('/feed')
+      }catch(e){
+        return e.message;
+      }
     },
+
      loginWithGoogle() {
        this.loginGoogle().then(()=>{
-         this.$router.push('/feed')
+         this.setUserDataToLocal().then(()=>{
+           this.$router.push('/feed')
+         })
        })
     },
 

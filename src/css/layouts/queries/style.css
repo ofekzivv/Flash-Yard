@@ -1,3 +1,12 @@
+@media (min-width: 767px) {
+  .cancelBtn{
+    margin-left: 20px !important;
+  }
+  .hafirot{
+    font-size: 20px;
+    width: 50vw
+  }
+}
 @media (max-width: 767px) {
   .seperator{
     display: none;
@@ -17,15 +26,35 @@
   .containerCarousel{
     width: 70vw !important;
   }
-  .btn-grad{
+  .btn-circSquare{
     height: 30px;
     width: 100px;
   }
-  .btn-grad.myColor{
+  .btn-circSquare.myColor{
     margin-bottom: 15%;
   }
   .YardBG{
     height: 100%;
+  }
+  .btnSize{
+    height: 10vw !important;
+    width: 60vw !important;
+    /*display: block;*/
+    vertical-align: middle;
+    line-height: 10px; /* <-- adjust this */
+    font-size: 8px;
+  }
+  .cancelBtn{
+    margin-left: 0px !important;
+  }
+  .btnBox{
+    display: block !important;
+  }
+  .hafirot{
+    font-size: 15px;
+    width: 80vw;
+    justify-content: center;
+    justify-items: center;
   }
 }
 
@@ -36,6 +65,16 @@
   .yardContainer{
     flex-direction: column !important;
     display: block;
+  }
+  .btnSize{
+    height: 7vw;
+    width: 55vw !important;
+    display: block;
+    vertical-align: middle;
+    line-height: 30px; /* <-- adjust this */
+  }
+  .cancelBtn{
+    margin-left: 0px !important;
   }
 }
 

@@ -11,11 +11,20 @@ export default () => {
     measurementId: "G-FH3G27Y0NK"
   };
   fbi.FBIInit(firebaseConfig)
+
   // fbi.firebase.initializeApp(firebaseConfig)
 
   fbi.firebase.auth().onAuthStateChanged(user => {
     window.user = user
+    if (!user){
+      localStorage.setItem('uid',JSON.stringify(false))
+      localStorage.setItem('user',JSON.stringify(false))
+    }else {
+      localStorage.setItem('uid',user.uid)
+      localStorage.setItem('user',JSON.stringify(user))
+    }
   })
+
 }
 
 
