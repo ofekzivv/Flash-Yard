@@ -56,7 +56,7 @@ export default {
     // 'PjW374abUwebiT1LwExdRB0cDvF2'
     async createTheChef(){
       // const userId = window.user.uid
-      if(fourth==true) {
+      while(this.fourth==true) {
         await this.createChef()
         this.$emit('xx')
         await this.$router.push('/addYard')
