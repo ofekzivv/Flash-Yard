@@ -1,12 +1,9 @@
 <template>
-  <addYardForm>
-      <router-view  @xx=""></router-view>
-  </addYardForm>
+  <addYardForm/>
 </template>
 
 <script>
 import addYardForm from "components/addYard/addYardForm";
-import {mapActions} from "vuex";
 export default {
   name: "AddYard",
   components : {

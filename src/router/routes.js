@@ -1,6 +1,7 @@
 const routes = [
   {
-    path: '/', component: () => import('layouts/MainLayout.vue'),
+    path: '/',
+    component: () => import('layouts/MainLayout.vue'),
     children: [
       {path: 'feed', component: () => import('pages/Feed')},
       {path: 'order', component: () => import('pages/Order')},
@@ -8,9 +9,7 @@ const routes = [
       {path: 'addYard', component: () => import('pages/AddYard')},
       {path: 'sumOrder', component: () => import('pages/sumOrder')},
       {path: 'payment', component: () => import('pages/payment')},
-      { path: 'MyProfile', component: () => import('pages/MyProfile')},
-      {path: 'addChef', component: () => import('pages/addChef')},
-      {path: 'about' , component: () => import('pages/About')}
+      { path: 'MyProfile', component: () => import('pages/MyProfile') }
     ]
   },
   {
@@ -20,10 +19,6 @@ const routes = [
   {
     path: '/reset',
     component: () => import('pages/ResetPassword')
-  },
-  {
-    path: '/test',
-    component: () => import('pages/test')
   },
   {
     path: '/:catchAll(.*)*',

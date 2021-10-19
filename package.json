@@ -15,13 +15,11 @@
     "firebase": "8.2.10",
     "nouislider": "^15.4.0",
     "quasar": "^1.15.23",
-    "secure-ls": "^1.2.6",
     "v-calendar": "^2.3.2",
     "vue": "2.6.14",
     "vue-infinite-loading": "^2.4.5",
     "vue-slider-component": "^4.0.0-beta.4",
-    "vue-stack-grid": "^1.2.2",
-    "vuex-persistedstate": "^4.1.0"
+    "vue-stack-grid": "^1.2.2"
   },
   "devDependencies": {
     "@quasar/app": "2.2.10",

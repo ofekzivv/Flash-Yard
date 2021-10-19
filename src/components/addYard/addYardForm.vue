@@ -1,107 +1,117 @@
 <template>
-
   <div class="container">
-    <h1>הוסף את החצר שלך</h1>
-    <div class="q-gutter-md" style="max-width: 400px">
 
+    <div class="q-gutter-md text-center" style="max-width: 400px">
+      <h1 v-if="!localEditedYard.uidChef">הוסף את החצר שלך</h1>
+      <h1 v-else> החצר שלי</h1>
       <div>
-        <input name="yardName" v-model="localNewYard.yardName" type="text" class="fieldInput" placeholder="שם החצר"/>
-        <input name="location" v-model="localNewYard.location" type="text" class="fieldInput" placeholder="מיקום"/>
-
+        <input
+               name="yardName"
+               v-model="localEditedYard.yardName"
+               type="text"
+               class="fieldInput"
+               placeholder="שם החצר"
+               pattern="[A-Za-z]"/>
+        <input name="location"
+               v-model="localEditedYard.location"
+               type="text" class="fieldInput"
+               placeholder="מיקום"
+               pattern="[A-Za-z]"
+               required
+        />
         <div class="rangeField">כמות סועדים
-          <span class="peopleRange">
-            <q-badge color="green">{{ localNewYard.peopleRange.max }}</q-badge> -
-            <q-badge color="red">{{ localNewYard.peopleRange.min }}</q-badge>
-          </span>
           <q-range
-              v-model="localNewYard.peopleRange"
-              :min="10"
-              :max="250"
-              :step="1"
-              label
-              localNewYard.peopleRange
+            color="negative"
+            v-model="localEditedYard.peopleRange"
+            :min="10"
+            :max="250"
+            :step="1"
+            label-always
+            localEditedYard.peopleRange
           />
         </div>
-
         <div class="space">
-
           <q-select
-              class="rangeField "
-              emit-value
-              multiple
-              map-options
-              v-model="localNewYard.foodCategory"
-              :options="options"
-              use-chips
-              stack-label
-              label="קטגוריות אוכל"
-              rounded
-              borderless
+            class="rangeField "
+            multiple
+            emit-value
+            map-options
+            v-model="localEditedYard.foodCategory"
+            :options="optionsFoodCat"
+            use-chips
+            stack-label
+            label="קטגוריות אוכל"
+            rounded
+            borderless
+            lazy-rules
+            :rules="[selectionRules]"
           >
             <template v-slot:selected-item="scope">
               <q-chip
-                  removable
-                  dense
-                  @remove="scope.removeAtIndex(scope.index)"
-                  :tabindex="scope.tabindex"
-                  color="white"
-                  text-color="secondary"
-                  class="q-ma-none"
+                removable
+                dense
+                @remove="scope.removeAtIndex(scope.index)"
+                :tabindex="scope.tabindex"
+                color="white"
+                text-color="negative"
+                class="q-ma-none"
               >
-                <q-avatar color="secondary" text-color="white"/>
+                <q-avatar color="negative" text-color="white" :icon="scope.opt.icon"/>
                 {{ scope.opt.label }}
               </q-chip>
             </template>
           </q-select>
         </div>
-
-        <!--        <input type="file" accept="image/*" @change="preview_image($event)">-->
-        <!--        <img id="output_image"/>-->
-
-        <q-file borderless clearable multiple class="rangeField" @input="preview_image($event)" v-model="images"
+        <q-file borderless multiple class="rangeField"
+                @input="Upload($event)"
+                v-model="images"
                 label="תמונות של המקום">
           <template v-slot:prepend>
             <q-icon name="cloud_upload"/>
           </template>
         </q-file>
+        <div class="images_section">
 
-        <div class="listFrame">
-          {{ images.length }}
-          <ul class="list">
-            <li class="item" v-for="(image,index) of previewImgs">
+
+          <ul class="imagesScroll">
+            <li class="item" v-for="(image,index) in imagesToAdd">
               <q-img class="img" :src="image">
+
                 <div class="img_action_container">
-                  <q-avatar  class="image_actions" icon="delete" @click="deleteImg(index)">
+                  <q-avatar class="image_actions" color="red" icon="delete" @click="deleteImg(index)">
                     <q-tooltip>
                       מחק תמונה
                     </q-tooltip>
                   </q-avatar>
-                  <q-avatar  class="image_actions" @click="makeCover(index)" icon="image">
+                  <q-avatar class="image_actions" color="green" icon="image" @click="makeCover(index)">
                     <q-tooltip>
-                      קבע כפרופיל
+                      הגדר כפרופיל
                     </q-tooltip>
                   </q-avatar>
                 </div>
               </q-img>
             </li>
           </ul>
-        </div
-        >
-        <div>
-          <q-img :src="localNewYard.cover" alt="localNewYard.cover">
+        </div>
+        <div class="img_cover">
+          <q-img class="img" :src="localEditedYard.cover">
             <div class="absolute-bottom text-subtitle1 text-center">
-              תמונות פרופיל
+              תמונת פרופיל
             </div>
           </q-img>
         </div>
 
 
-        <input name="price" v-model="localNewYard.pricePerHead" type="number" placeholder="מחיר פר סועד"
-               class="fieldInput"/>
-        <textarea v-model="localNewYard.placeDesc" class="fieldInput" placeholder="פרטים על המקום"></textarea>
+        <input name="price" v-model="localEditedYard.pricePerHead" type="number" placeholder=" מחיר פר סועד (בשקלים)"
+               class="fieldInput"
+               min="10" max="100"/>
+        <textarea v-model="localEditedYard.placeDesc" class="fieldInput" placeholder="פרטים על המקום"/>
+        <div>
+          <button :disabled="btn_status" v-if="!localEditedYard.uidChef" class="btn" @click="createYard">הוסף חצר
+          </button>
+          <button v-else :disabled="btn_status" class="btn" @click="updatedYard">עדכן חצר</button>
 
-
-        <button class="btn" @click="addYard" :disabled="localNewYard.clicked">הוסף</button>
+        </div>
       </div>
 
     </div>
@@ -110,100 +120,100 @@
 
 <script>
 import {mapState, mapActions, mapMutations} from "vuex";
+import FS from "../../middleware/firestore"
 
 export default {
-
   name: "addYardForm",
   computed: {
-    // ...mapState('yards', ['editYard']),
-    // ...mapState('users', ['loginUser']),
+    ...mapState('yards', ['editedYard', 'foodCatOpt']),
   },
   data() {
     return {
-      localNewYard: {
+      localEditedYard: {
+        uidChef: '',
         yardName: '',
         peopleRange: {
           min: 10,
           max: 250
         },
-        uidChef:'',
         location: '',
         pricePerHead: '',
         foodCategory: [],
         placeDesc: '',
-        cover:0,
-        clicked:false
+        cover: '',
+        imagesUrl: []
       },
-      index:0,
+      uploadStatus: 0,
+      btn_status: false,
+      optionsFoodCat: [],
       images: [],
-      previewImgs: [],
-      url: 'https://placeimg.com/500/300/nature',
-
-
-      options: [
-        {
-          label: 'גריל',
-          value: 'gril',
-          icon: 'fas fa-hamburger'
-        },
-        {
-          label: 'איטלקי',
-          value: 'italian',
-          icon: 'fas fa-pizza-slice'
-        },
-        {
-          label: 'ים תיכוני',
-          value: 'Mediterranean',
-          icon: 'map'
-        },
-        {
-          label: 'דגים',
-          value: 'fish',
-          icon: 'fas fa-fish'
-        }],
+      imagesToAdd: [],
     }
   },
   methods: {
-    ...mapActions('yards', ["insertYard"]),
-    ...mapActions('users',['setUserDataToLocal']),
-    preview_image(event) {
-      let arr = []
-      event.forEach(img => {
-        let reader = new FileReader()
-        reader.onload = function () {
-          img.previewUri = reader.result
-          arr.push(reader.result)
-        }
-        reader.readAsDataURL(img);
+    ...mapActions('yards', ["insertYard", "getYardByUserId", "createYardId", "setEditedYardById", "createMetadata", "updateYard", "getFoodCategory", 'addImag', 'delImag', 'getFoodCategory']),
+    ...mapMutations('yards', ['setEditedYard']),
+    selectionRules(val)
+    {
+      if(val.length<=0)
+        return 'עליך לבחור קטגוריה אחת לפחות'
+    },
+    async Upload(event) {
+      this.uploadStatus = 0;
+      this.imagesToAdd = this.imagesToAdd.concat((await FS.uploadYardsImages({
+        images: event,
+        yardId: this.localEditedYard.yardId
+      })))
+    },
+      deleteImg(index) {
+      try{
+        FS.deleteYardsImages(this.imagesToAdd[index])
+      }
+      catch (ex)
+      {
+        console.log('error',ex)
+      }
+
+        if(this.localEditedYard.cover===this.imagesToAdd[index])
+          this.localEditedYard.cover='https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg'
+      this.imagesToAdd.splice(index, 1)
+        this.localEditedYard.imagesUrl=[...this.imagesToAdd]
+    },
+    makeCover(index) {
+      this.localEditedYard.cover = this.imagesToAdd[index]
+
+    },
+    async createYard() {
+      this.localEditedYard.imagesUrl = [...this.imagesToAdd]
+      this.localEditedYard.uidChef = window.user.uid
+      this.setEditedYard(this.localEditedYard)
+      await this.insertYard()
+      await this.$router.push('/Feed')
+    },
+    async updatedYard() {
+      this.setEditedYard(this.localEditedYard)
+      await this.updateYard().then(() => {
+        this.$router.push('/Feed')
       })
-      this.previewImgs = arr
     },
-     ...mapActions('users',['setUserDataToLocal']),
-
-    deleteImg(index) {
-      this.previewImgs.splice(index, 1)
-      this.images.splice(index, 1)
-    },
-    makeCover(index){
-      this.localNewYard.cover = this.previewImgs[index]
-      this.index=index;
-    },
-
-    async addYard() {
-      this.clicked = true
-      //send to action obj with all local data & img
-      this.localNewYard.cover = this.index;
-      await this.insertYard({data: this.localNewYard, images: this.images})
-      this.previewImgs = []
-      await this.setUserDataToLocal()
-      await this.$parent.$emit('xx')
-      await this.$router.push('/feed')
-    },
-
+    async init_page() {
+      if (!this.foodCatOpt.length)
+        await this.getFoodCategory()
+      this.optionsFoodCat = [...this.foodCatOpt]
+      await this.getYardByUserId(window.user.uid)
+        .then(async () => {
+          Object.assign(this.localEditedYard, this.editedYard)
+          if (!this.localEditedYard.yardId)
+            this.localEditedYard.yardId = await this.createYardId()
+          if (this.localEditedYard.imagesUrl.length > 0) {
+            this.imagesToAdd = [...this.localEditedYard.imagesUrl]
+          }
+        })
+    }
   },
   created() {
-    this.uidChef=window.user.uid
-  }
+    this.init_page()
+  },
 }
 </script>
 
@@ -215,11 +225,17 @@ export default {
 h1 {
   font-weight: bold;
   font-size: 35px;
-  padding:10px;
+  padding: 10px;
   color: #111111;
 
 }
-.container{
+
+.image_actions {
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.container {
   margin: 15px 15px;
   padding: 15px;
   display: flex;
@@ -228,17 +244,20 @@ h1 {
   align-content: center;
   align-items: center;
 
-  border-radius:15px 15px 15px 15px;
+  border-radius: 15px 15px 15px 15px;
 }
+
 .space {
   margin-top: 20px;
   margin-bottom: 20px;
 }
-.fieldInput{
+
+.fieldInput {
   font-weight: bold;
   font-size: 14px;
   width: 100%;
-  margin: 20px 20px;
+  max-width: 100%;
+  margin: 20px 0;
   height: 50px;
   padding: 15px 15px;
   border-radius: 15px;
@@ -247,11 +266,12 @@ h1 {
   background: #F6F7F9;
   color: #757575;
 }
+
 .rangeField {
   font-weight: bold;
   font-size: 14px;
   width: 100%;
-  margin: 15px 15px;
+  margin: 15px 0;
   height: 75px;
   padding: 10px 10px;
   border-radius: 15px;
@@ -260,6 +280,7 @@ h1 {
   background: #F6F7F9;
   color: #757575;
 }
+
 ::placeholder {
   padding-right: 50px;
 }
@@ -279,32 +300,37 @@ h1 {
   font-size: 14px;
 }
 
-.peopleRange {
-  /*float: right;*/
-}
-
-/*-------------------------test Css--------------------------*/
-.listFrame {
+.images_section {
   max-width: 100%;
   width: calc(100% - 20px);
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 30px;
+  margin-right: 30px;
 }
 
-.list {
+.imagesScroll {
   display: flex;
   padding: 20px;
   overflow-x: scroll;
   list-style: none;
   border: 5px solid #fff;
-  /*background-color: #181818;*/
+  border-radius: 12px;
+}
+
+.cover_Scroll {
+  background-color: white;
+  width: 50%;
+  display: inherit;
+
   padding: 20px;
+  list-style: none;
+  /*overflow-x: scroll;*/
+  border: 5px solid #fff;
   border-radius: 12px;
 }
 
 .item {
-  display: flex;
-  justify-content: center;
+  display: block;
+  justify-content: space-between;
   align-items: center;
   color: #fff;
   border-radius: 8px;
@@ -312,7 +338,30 @@ h1 {
   text-shadow: 0 2px 1px rgba(0, 0, 0, 0.4);
   box-shadow: 0 2px 1px rgba(0, 0, 0, 1);
   height: 150px;
-  width: 125px;
+  max-width: 125px;
+  /*/ / width: 125 px;*/
+  flex-shrink: 0;
+  flex: 1 0 45%;
+  margin: 5%;
+}
+
+.img:hover .img_action_container {
+  display: block;
+}
+
+.img_action_container {
+  display: none;
+  height: 100%;
+}
+
+
+.img_cover {
+  align-items: center;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 32px;
+  height: 150px;
+  max-width: 364px;
   flex-shrink: 0;
   flex: 1 0 45%;
   margin: 5%;
@@ -323,156 +372,5 @@ h1 {
   height: 100%;
 }
 
-.image_actions {
 
-}
-
-.img_action_container {
-  /*display: flex;*/
-  justify-content: space-between;
-  margin-left:5px;
-}
 </style>
-
-
-
-
-
-
-
-
-
-
-<!--<template>-->
-
-<!--  <div class="container">-->
-<!--    <h1>הוסף את החצר שלך</h1>-->
-<!--    <div class="q-gutter-md" style="max-width: 400px">-->
-
-<!--      <div>-->
-<!--        <input name="yardName" v-model="localNewYard.yardName" type="text" class="fieldInput" placeholder="שם החצר" />-->
-<!--        <input name="location" v-model="localNewYard.location" type="text" class="fieldInput" placeholder="מיקום" />-->
-
-<!--        <div class="rangeField">כמות סועדים-->
-<!--          <q-input borderless-->
-<!--                   name="quantity" type="range"-->
-<!--                   v-model="localNewYard.peopleRange"-->
-<!--                   min="2" max="100"-->
-<!--                   placeholder="כמות המשתתפים האפשרית" >-->
-<!--            <q-badge floating color="red">{{localNewYard.peopleRange}}</q-badge>-->
-<!--          </q-input>-->
-<!--        </div>-->
-
-<!--        <div class="space" >-->
-
-<!--          <q-select-->
-<!--            class="rangeField "-->
-<!--            emit-value-->
-<!--            multiple-->
-<!--            map-options-->
-<!--            v-model="localNewYard.foodCategory"-->
-<!--            :options="options"-->
-<!--            use-chips-->
-<!--            stack-label-->
-<!--            label="קטגוריות אוכל"-->
-<!--            rounded-->
-<!--            borderless-->
-<!--          >-->
-<!--            <template v-slot:selected-item="scope">-->
-<!--              <q-chip-->
-<!--                removable-->
-<!--                dense-->
-<!--                @remove="scope.removeAtIndex(scope.index)"-->
-<!--                :tabindex="scope.tabindex"-->
-<!--                color="white"-->
-<!--                text-color="secondary"-->
-<!--                class="q-ma-none"-->
-<!--              >-->
-<!--                <q-avatar color="secondary" text-color="white" />-->
-<!--                {{ scope.opt.label }}-->
-<!--              </q-chip>-->
-<!--            </template>-->
-<!--          </q-select>-->
-<!--        </div>-->
-
-<!--        <q-file borderless clearable multiple class="rangeField" v-model="images" label="תמונות של המקום" >-->
-<!--          <template v-slot:prepend>-->
-<!--            <q-icon name="cloud_upload" />-->
-<!--          </template>-->
-<!--        </q-file>-->
-
-<!--        <input name="price" v-model="localNewYard.pricePerHead" type="number" placeholder="מחיר פר סועד" class="fieldInput"/>-->
-<!--        <textarea v-model="localNewYard.placeDesc" class="fieldInput" placeholder="פרטים על המקום"></textarea>-->
-
-
-<!--        <button class="btn" @click="addYard">הוסף</button>-->
-<!--      </div>-->
-
-<!--    </div>-->
-<!--  </div>-->
-<!--</template>-->
-
-<!--<script>-->
-<!-- import {mapState,mapActions,mapMutations} from "vuex";-->
-
-<!--export default {-->
-
-<!--  name: "addYardForm",-->
-<!--  computed:{-->
-<!--    // ...mapState('yards', ['editYard']),-->
-<!--    // ...mapState('users', ['loginUser']),-->
-<!--  },-->
-<!--  data() {-->
-<!--    return {-->
-<!--      localNewYard: {-->
-<!--        yardName:'',-->
-<!--        peopleRange:'',-->
-<!--        location:'',-->
-<!--        pricePerHead:'',-->
-<!--        foodCategory:[],-->
-<!--        placeDesc:''-->
-<!--      },-->
-<!--      images: [],-->
-
-<!--      options: [-->
-<!--        {-->
-<!--          label: 'גריל',-->
-<!--          value: 'gril',-->
-<!--          icon: 'fas fa-hamburger'-->
-<!--        },-->
-<!--        {-->
-<!--          label: 'איטלקי',-->
-<!--          value: 'italian',-->
-<!--          icon: 'fas fa-pizza-slice'-->
-<!--        },-->
-<!--        {-->
-<!--          label: 'ים תיכוני',-->
-<!--          value: 'Mediterranean',-->
-<!--          icon: 'map'-->
-<!--        },-->
-<!--        {-->
-<!--          label: 'דגים',-->
-<!--          value: 'fish',-->
-<!--          icon: 'fas fa-fish'-->
-<!--        }],-->
-<!--    }-->
-<!--  },-->
-<!--  methods : {-->
-<!--     ...mapActions('yards', ["insertYard"]),-->
-
-<!--    async addYard() {-->
-<!--      //send to action obj with all local data & img-->
-<!--      const images = this.images-->
-<!--      console.log('images',images)-->
-<!--       this.insertYard({data : this.localNewYard, images})-->
-<!--       console.log('this.localNewYard',this.localNewYard)-->
-<!--       this.images = []-->
-
-<!--    },-->
-
-<!--  }-->
-<!--}-->
-<!--</script>-->
-
-<!--<style scoped>-->
-<!--</style>-->

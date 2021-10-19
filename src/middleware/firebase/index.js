@@ -1,6 +1,7 @@
 import firebase from 'firebase/app'
 import 'firebase/firestore';
 
+
 const  authentication = () => {
   return firebase.auth();
 }

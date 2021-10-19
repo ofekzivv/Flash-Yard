@@ -1,7 +1,8 @@
 <template>
     <div>
       <div class="card"  :style="{backgroundImage:`linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.9)),
-      url(${yard.cover})`}">
+      url(${yard.cover})`}"
+      >
         <div class="card-headers">
           <h4 class="card-title">{{ yard.yardName }}</h4>
           <h4 class="card-category">קטגוריה:
@@ -36,7 +37,7 @@
           </q-list>
 
         </div>
-        <button class="card-btn" @click="goToItem(yard.id)">לפרטים נוספים</button>
+        <button class="card-btn" @click="goToItem(yard.yardId)">לפרטים נוספים</button>
         </div>
   </div>
 </template>
@@ -54,6 +55,7 @@ export default {
     }
   },
   computed: {
+
   },
   methods: {
     ...mapActions('yards', ['setEditedYardById']),
@@ -151,7 +153,7 @@ export default {
 
 .card-btn {
   font-size: 20px;
-  background:linear-gradient(to right,#c01039,#dc1223 67%,#de1e1e 84%,#e02a19);
+  background-color: #C10015;
   color: white;
   border: none;
   padding: 10px 12px;
