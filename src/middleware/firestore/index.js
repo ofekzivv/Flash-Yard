@@ -6,6 +6,24 @@ import {log} from "@quasar/app/lib/helpers/logger";
 
 //FBI.DB() point to => firebase.firestore()
 
+function getUserById(currentUserId){
+  return FBI.DB().collection('users').doc(currentUserId).get()
+    .then(res=>{
+      return res.data()
+      //console.log(res.data())
+    })
+}
+
+async function createNewChef(){
+  debugger
+  return await FBI.DB().collection('users').doc(`${window.user.uid}`).update({
+    isAChef: true,
+    yardId: null
+  })
+}
+
+
+
 function createUser(data) {
   return FBI.DB().collection('users').doc(`${window.user.uid}`).set(data)
 }
@@ -22,9 +40,7 @@ async function uploadYardsImages(options) {
 
 async function deleteYardsImages(options) {
   console.log("images to delete - firestore")
-  await deleteImageFile(options).then(() => {
-    console.log('123')
-  })
+  await deleteImageFile(options)
 
 }
 
@@ -42,15 +58,13 @@ async function insertImageFile(yardRef, image, yardId) {
   let res = await yardFolder.put(image)
   return  await res.ref.getDownloadURL()
 
-  // let url = await res.ref.getDownloadURL()
-  // return url
+
 }
 
 async function deleteImageFile(image) {
   const storage = FBI.firebase.storage()
   const imageRef = await storage.refFromURL(image)
-  const a= await imageRef.delete()
-  console.log('123')
+  await imageRef.delete()
 }
 
 
@@ -58,5 +72,6 @@ export default {
   createUser,
   uploadYardsImages,
   deleteYardsImages,
-  getImagesUrls
+  getUserById,
+  createNewChef
 }

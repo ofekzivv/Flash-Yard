@@ -1,5 +1,4 @@
 <template>
-
   <div class="feed">
     <YardCard v-for="yard of myYards" :yard="yard"/>
     <InfiniteLoading @infinite="infiniteHandler">
@@ -64,8 +63,8 @@ export default {
   created() {
     if(!this.foodCatOpt.length)
       this.getFoodCategory()
+    debugger
     this.myYards = [...this.yards]
-    console.log(this.yards)
   }
 
 

@@ -1,4 +1,3 @@
-import FS from "../../middleware/firestore/"
 import FS_Yards from "../../middleware/firestore/yards"
 
 
@@ -15,17 +14,14 @@ export default {
   createYardId: async ()=>{
     return FS_Yards.createYardId()
   },
-  createMetadata: async ({dispatch},images,yardId)=>{
-    await dispatch('addImag',{images:images,yardId:yardId})
-    return await FS.getImagesUrls(yardId)
-  },
-  updateYard: async ({state, commit, dispatch}) => {
 
+  updateYard: async ({state, commit, dispatch}) => {
     const yard={}
     Object.assign(yard,state.editedYard)
+    delete yard.id
     await FS_Yards.updateYard(yard)
-    commit('editYard',yard)
-    dispatch('resetState')
+    commit('editYard')
+    dispatch('reset')
   },
   getFoodCategory: async ({commit}) => {
     await FS_Yards.getFoodCat()
@@ -36,37 +32,36 @@ export default {
 
 
   insertYard: async ({state, commit, dispatch}) => {
-   //save to DB
-    await FS_Yards.createYard(state.editedYard)
+    const yard={}
+    Object.assign(yard,state.editedYard)
+    delete yard.id
 
+   //save to DB
+    console.log('-----yards state before update DB',state.yards)
+    await FS_Yards.createYard(yard,state.editedYard.id)
+    console.log('after push to DB')
     //save to store
-    commit('insertYard')
-    dispatch('resetState')
+     await commit('insertYard')
+    console.log('after update  yards state')
+    dispatch('reset')
   },
   /***************setEditedYardById****************
    *     set the EditedYard                       *
    ***********************************************/
-  setEditedYardById: async ({state, commit}, id) => {
+  setEditedYardById: async ({state, commit}) => {
     let yard = {}
-    if (state.yards.length && state.yards.find(yard => yard.yardId === state.editedYardId)) {
-      yard = state.yards.find(yard => yard.yardId === state.editedYardId);
+    if (state.yards.length && state.yards.find(y => y.id === state.editedYardId)) {
+      yard = state.yards.find(yard => yard.id === state.editedYardId);
     } else {
-      yard = await FS_Yards.getYardById(id)
+      yard = await FS_Yards.getYardById(state.editedYardId)
     }
     commit('setEditedYard', yard)
   },
-  resetState: ({commit}) => {
+  /***************reset****************************
+   *     reset editedYardId & editedYardId        *
+   ***********************************************/
+  reset: ({commit}) => {
     commit('resetEditedYardId')
     commit('resetEditedYard')
-  },
-  getYardByUserId: ({state, commit, dispatch}, userId) => {
-    return FS_Yards.getYardIdByUserId(userId)
-      .then(yardId => {
-        if (yardId !== null) {
-          commit('setEditedYardId', yardId)
-          dispatch('setEditedYardById', state.editedYardId)
-        }
-      }).catch(err => console.error(err))
-  },
-
+  }
 }

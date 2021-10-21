@@ -9,11 +9,11 @@ async function getYards() {
   }
   const yardsSnap = await db.get()
   lastDoc = yardsSnap.docs[yardsSnap.docs.length - 1]
-  return yardsSnap.docs.map(doc => doc.data())
-    // const obj = doc.data()
-    // obj.id = doc.id
-    // return obj)
-
+  return yardsSnap.docs.map(doc => {
+    const obj = doc.data()
+    obj.id = doc.id
+    return obj
+  })
 }
 
  function createYardId(){
@@ -26,9 +26,9 @@ function getYardById(Id) {
     .then(response => response.data())
     .catch(err => console.error(err))
 }
-async function createYard(yard) {
-  await FBI.DB().collection('yards').doc(yard.yardId).set(yard)
-  return FBI.DB().collection('users').doc(window.user.uid).update('yardId',yard.yardId)
+async function createYard(yard,id) {
+  await FBI.DB().collection('yards').doc(id).set(yard)
+  return FBI.DB().collection('users').doc(window.user.uid).update('yardId',id)
 }
 
 function updateYard(yard)
@@ -37,14 +37,6 @@ function updateYard(yard)
     .then(res=>console.log(res))
     .catch(err=> console.log(err))
 }
-function getYardIdByUserId(userId){
-  return FBI.DB().collection('users').doc(userId).get()
-    .then(response=>{
-      // console.log(response.data().yardId)
-      return response.data().yardId
-    })
-}
-
 function getFoodCat()
 {
       return FBI.DB().collection('food_categories').get()
@@ -55,7 +47,6 @@ function getFoodCat()
 export default {
   getYards,
   getYardById,
-  getYardIdByUserId,
   createYard,
   createYardId,
   updateYard,

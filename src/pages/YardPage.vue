@@ -28,7 +28,7 @@
             enter-active-class="animated fadeIn"
             leave-active-class="animated fadeOut"
           >
-            <q-btn class="btn-grad myColor" label="לעבור להזמנה" @click="nav()"/>
+            <q-btn class="btn-circSquare myColor" label="לעבור להזמנה" @click="nav()"/>
           </transition>
         </div>
         <div class="containerCarousel">
@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import {mapState,mapActions,mapMutations} from 'vuex'
 
 export default {
   name: "YardPage",
@@ -83,12 +83,20 @@ export default {
 
   },
   methods:{
+    ...mapActions('yards',['setEditedYardById']),
+    ...mapMutations('yards',['setEditedYardId']),
     nav(){
       this.$router.push('/order')
     },
     onThumbClick (_index) {
       this.currentIndex = _index;
     },
+  },
+  created() {
+    debugger
+    if (!this.editedYardId){
+      this.setEditedYardId(this.$route.params.id)
+    }
   }
 }
 </script>

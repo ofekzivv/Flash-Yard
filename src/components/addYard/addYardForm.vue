@@ -1,9 +1,8 @@
 <template>
   <div class="container">
-
     <div class="q-gutter-md text-center" style="max-width: 400px">
       <h1 v-if="!localEditedYard.uidChef">הוסף את החצר שלך</h1>
-      <h1 v-else> החצר שלי</h1>
+      <h1 v-else> החצר שלי </h1>
       <div>
         <input
                name="yardName"
@@ -30,6 +29,7 @@
             localEditedYard.peopleRange
           />
         </div>
+
         <div class="space">
           <q-select
             class="rangeField "
@@ -37,7 +37,7 @@
             emit-value
             map-options
             v-model="localEditedYard.foodCategory"
-            :options="optionsFoodCat"
+            :options="foodCatOpt"
             use-chips
             stack-label
             label="קטגוריות אוכל"
@@ -63,7 +63,7 @@
           </q-select>
         </div>
         <q-file borderless multiple class="rangeField"
-                @input="Upload($event)"
+                @input="uploadImg($event)"
                 v-model="images"
                 label="תמונות של המקום">
           <template v-slot:prepend>
@@ -125,7 +125,7 @@ import FS from "../../middleware/firestore"
 export default {
   name: "addYardForm",
   computed: {
-    ...mapState('yards', ['editedYard', 'foodCatOpt']),
+    ...mapState('yards', ['yards','editedYard', 'foodCatOpt']),
   },
   data() {
     return {
@@ -145,24 +145,23 @@ export default {
       },
       uploadStatus: 0,
       btn_status: false,
-      optionsFoodCat: [],
       images: [],
       imagesToAdd: [],
     }
   },
   methods: {
-    ...mapActions('yards', ["insertYard", "getYardByUserId", "createYardId", "setEditedYardById", "createMetadata", "updateYard", "getFoodCategory", 'addImag', 'delImag', 'getFoodCategory']),
-    ...mapMutations('yards', ['setEditedYard']),
+    ...mapActions('yards', ["insertYard", "createYardId","reset", "setEditedYardById", "updateYard", 'getFoodCategory']),
+    ...mapMutations('yards', ['setEditedYardId','setEditedYard']),
     selectionRules(val)
     {
       if(val.length<=0)
         return 'עליך לבחור קטגוריה אחת לפחות'
     },
-    async Upload(event) {
+    async uploadImg(event) {
       this.uploadStatus = 0;
       this.imagesToAdd = this.imagesToAdd.concat((await FS.uploadYardsImages({
         images: event,
-        yardId: this.localEditedYard.yardId
+        yardId: this.localEditedYard.id
       })))
     },
       deleteImg(index) {
@@ -183,10 +182,12 @@ export default {
       this.localEditedYard.cover = this.imagesToAdd[index]
 
     },
+
     async createYard() {
       this.localEditedYard.imagesUrl = [...this.imagesToAdd]
       this.localEditedYard.uidChef = window.user.uid
       this.setEditedYard(this.localEditedYard)
+      console.log(this.yards)
       await this.insertYard()
       await this.$router.push('/Feed')
     },
@@ -197,23 +198,29 @@ export default {
       })
     },
     async init_page() {
-      if (!this.foodCatOpt.length)
+      if(!this.foodCatOpt.length){
         await this.getFoodCategory()
-      this.optionsFoodCat = [...this.foodCatOpt]
-      await this.getYardByUserId(window.user.uid)
-        .then(async () => {
-          Object.assign(this.localEditedYard, this.editedYard)
-          if (!this.localEditedYard.yardId)
-            this.localEditedYard.yardId = await this.createYardId()
-          if (this.localEditedYard.imagesUrl.length > 0) {
-            this.imagesToAdd = [...this.localEditedYard.imagesUrl]
-          }
-        })
+      }
+      console.log(this.$route.params)
+      if(this.$route.params.id)
+      {
+        const id=this.$route.params.id;
+        this.setEditedYardId(id)
+        await this.setEditedYardById()
+        Object.assign(this.localEditedYard,this.editedYard)
+        this.imagesToAdd = [...this.localEditedYard.imagesUrl]
+      }
+      else{
+        this.localEditedYard.id=await this.createYardId()
+      }
     }
   },
   created() {
     this.init_page()
   },
+  destroyed() {
+    this.reset()
+  }
 }
 </script>
 
@@ -316,17 +323,7 @@ h1 {
   border-radius: 12px;
 }
 
-.cover_Scroll {
-  background-color: white;
-  width: 50%;
-  display: inherit;
 
-  padding: 20px;
-  list-style: none;
-  /*overflow-x: scroll;*/
-  border: 5px solid #fff;
-  border-radius: 12px;
-}
 
 .item {
   display: block;
