@@ -13,13 +13,18 @@
     "@quasar/extras": "^1.9.20",
     "core-js": "3.16.4",
     "firebase": "8.2.10",
+    "firebase-admin": "^9.12.0",
+    "firebase-functions": "^3.15.7",
+    "js-cookie": "^3.0.1",
     "nouislider": "^15.4.0",
     "quasar": "^1.15.23",
+    "secure-ls": "^1.2.6",
     "v-calendar": "^2.3.2",
     "vue": "2.6.14",
     "vue-infinite-loading": "^2.4.5",
     "vue-slider-component": "^4.0.0-beta.4",
-    "vue-stack-grid": "^1.2.2"
+    "vue-stack-grid": "^1.2.2",
+    "vuex-persistedstate": "^4.1.0"
   },
   "devDependencies": {
     "@quasar/app": "2.2.10",

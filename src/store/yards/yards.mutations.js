@@ -21,8 +21,8 @@ export default {
     state.foodCatOpt=[...foodCategories]
   }),
 
-  insertYard: ((state) => {
-    state.yards.push(state.editedYard)
+  insertYard: ((state,yard) => {
+    state.yards.push(yard)
   }),
 
   resetEditedYardId: ((state) => state.editedYardId = ''),

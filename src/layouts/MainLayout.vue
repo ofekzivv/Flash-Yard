@@ -160,7 +160,7 @@ export default {
       }else if(window.user.uid){
         userId = window.user.uid
       }
-      let myData = await FS.getUserById(userId)
+      let myData = await FS.users.getUserById(userId)
       /***********************loadData*****************
        *if you are a regular client not a chef      *
        ***********************************************/

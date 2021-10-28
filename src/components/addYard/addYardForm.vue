@@ -5,12 +5,12 @@
       <h1 v-else> החצר שלי </h1>
       <div>
         <input
-               name="yardName"
-               v-model="localEditedYard.yardName"
-               type="text"
-               class="fieldInput"
-               placeholder="שם החצר"
-               pattern="[A-Za-z]"/>
+          name="yardName"
+          v-model="localEditedYard.yardName"
+          type="text"
+          class="fieldInput"
+          placeholder="שם החצר"
+          pattern="[A-Za-z]"/>
         <input name="location"
                v-model="localEditedYard.location"
                type="text" class="fieldInput"
@@ -107,9 +107,9 @@
                min="10" max="100"/>
         <textarea v-model="localEditedYard.placeDesc" class="fieldInput" placeholder="פרטים על המקום"/>
         <div>
-          <button :disabled="btn_status" v-if="!localEditedYard.uidChef" class="btn" @click="createYard">הוסף חצר
+          <button :disabled="btn_status" v-if="!localEditedYard.uidChef" class="btn" @click="this.createYard">הוסף חצר
           </button>
-          <button v-else :disabled="btn_status" class="btn" @click="updatedYard">עדכן חצר</button>
+          <button v-else :disabled="btn_status" class="btn" @click="this.updatedYard">עדכן חצר</button>
 
         </div>
       </div>
@@ -147,73 +147,72 @@ export default {
       btn_status: false,
       images: [],
       imagesToAdd: [],
+      clicked:false
     }
   },
   methods: {
-    ...mapActions('yards', ["insertYard", "createYardId","reset", "setEditedYardById", "updateYard", 'getFoodCategory']),
-    ...mapMutations('yards', ['setEditedYardId','setEditedYard']),
-    selectionRules(val)
-    {
-      if(val.length<=0)
+    ...mapActions('users',["setUserDataToLocal"]),
+    ...mapActions('yards', ["insertYard", "createYardId", "reset", "setEditedYardById", "updateYard", 'getFoodCategory']),
+    ...mapMutations('yards', ['setEditedYardId', 'setEditedYard']),
+    selectionRules(val) {
+      if (val.length <= 0)
         return 'עליך לבחור קטגוריה אחת לפחות'
     },
     async uploadImg(event) {
       this.uploadStatus = 0;
-      this.imagesToAdd = this.imagesToAdd.concat((await FS.uploadYardsImages({
+      this.imagesToAdd = this.imagesToAdd.concat((await FS.yards.uploadYardsImages({
         images: event,
         yardId: this.localEditedYard.id
       })))
     },
-      deleteImg(index) {
-      try{
-        FS.deleteYardsImages(this.imagesToAdd[index])
-      }
-      catch (ex)
-      {
-        console.log('error',ex)
+    deleteImg(index) {
+      try {
+        FS.yards.deleteYardsImages(this.imagesToAdd[index])
+      } catch (ex) {
+        console.log('error', ex)
       }
 
-        if(this.localEditedYard.cover===this.imagesToAdd[index])
-          this.localEditedYard.cover='https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg'
+      if (this.localEditedYard.cover === this.imagesToAdd[index])
+        this.localEditedYard.cover = 'https://icon-library.com/images/no-image-icon/no-image-icon-0.jpg'
       this.imagesToAdd.splice(index, 1)
-        this.localEditedYard.imagesUrl=[...this.imagesToAdd]
+      this.localEditedYard.imagesUrl = [...this.imagesToAdd]
     },
     makeCover(index) {
       this.localEditedYard.cover = this.imagesToAdd[index]
-
     },
-
     async createYard() {
+      debugger;
+      this.clicked = true
       this.localEditedYard.imagesUrl = [...this.imagesToAdd]
       this.localEditedYard.uidChef = window.user.uid
       this.setEditedYard(this.localEditedYard)
-      console.log(this.yards)
       await this.insertYard()
-      await this.$router.push('/Feed')
+      debugger
+      await this.setUserDataToLocal()
+      await this.$parent.$emit('xx')
+      await this.$router.push('/feed')
     },
     async updatedYard() {
       this.setEditedYard(this.localEditedYard)
       await this.updateYard().then(() => {
-        this.$router.push('/Feed')
+        this.$router.push('/feed')
       })
     },
     async init_page() {
-      if(!this.foodCatOpt.length){
+      if (!this.foodCatOpt.length) {
         await this.getFoodCategory()
       }
       console.log(this.$route.params)
-      if(this.$route.params.id)
-      {
-        const id=this.$route.params.id;
+      if (this.$route.params.id) {
+        const id = this.$route.params.id;
         this.setEditedYardId(id)
         await this.setEditedYardById()
-        Object.assign(this.localEditedYard,this.editedYard)
+        Object.assign(this.localEditedYard, this.editedYard)
         this.imagesToAdd = [...this.localEditedYard.imagesUrl]
+      } else {
+        this.localEditedYard.id = await this.createYardId()
       }
-      else{
-        this.localEditedYard.id=await this.createYardId()
-      }
-    }
+    },
   },
   created() {
     this.init_page()
@@ -250,7 +249,6 @@ h1 {
   justify-content: center;
   align-content: center;
   align-items: center;
-
   border-radius: 15px 15px 15px 15px;
 }
 
@@ -320,6 +318,8 @@ h1 {
   overflow-x: scroll;
   list-style: none;
   border: 5px solid #fff;
+  /*background-color: #181818;*/
+  padding: 20px;
   border-radius: 12px;
 }
 
@@ -368,6 +368,5 @@ h1 {
   width: 100%;
   height: 100%;
 }
-
 
 </style>

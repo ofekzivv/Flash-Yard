@@ -22,6 +22,10 @@ const routes = [
     path: '/reset',
     component: () => import('pages/ResetPassword')
   },
+  // {
+  //   path: '/test',
+  //   component: () => import('pages/test')
+  // },
   {
     path: '/:catchAll(.*)*',
     component: () => import('pages/Error404.vue')

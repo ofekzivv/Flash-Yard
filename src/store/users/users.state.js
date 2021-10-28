@@ -8,7 +8,14 @@ export default {
         email: '',
         isAChef: false
     },
-    loginUser : {}
+    loginUser : {},
+
+  //הוספות שלי
+  disableDays:[],
+  disableWeekdays:{
+    weekdays:[],
+  },
+
 
 
 }

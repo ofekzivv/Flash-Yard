@@ -60,9 +60,10 @@ export default {
 </script>
 
 <style scoped>
-.text-h5{
+.text-h5 {
   font-weight: bold;
 }
+
 .payment-card {
   height: 100%;
   width: 100%;
@@ -77,8 +78,9 @@ export default {
   align-items: center;
   justify-content: center;
 }
-.pay-button *{
-  background: #21BA45;
+
+.pay-button * {
+  background: linear-gradient(to left, #c01039, #dc1223 67%, #de1e1e 84%, #e02a19);
   font-weight: bold;
 }
 </style>

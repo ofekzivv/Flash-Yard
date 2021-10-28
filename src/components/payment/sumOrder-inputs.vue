@@ -5,9 +5,43 @@
       <div class="h1">
         <h1> סיכום עסקה</h1>
       </div>
-      <q-input label="תאריך" outlined filled dense="dense" disable/>
-      <q-input label="מספר אנשים" outlined filled dense="dense" disable/>
-      <q-input label="סכום עסקה:" outlined filled dense="dense" disable/>
+      <div class="q-pa-md row flex items-baseline">
+        <P>תאריך האירוע : </P>
+        <q-field :dense="true" outlined>
+          <template v-slot:control>
+            <div class="self-center full-width no-outline" tabindex="0">
+              <q-icon name="event"/>
+              {{ dateToShortString }}
+            </div>
+          </template>
+        </q-field>
+      </div>
+      <div class="q-pa-md row flex items-baseline">
+        <P>כמות משתתפים : </P>
+        <q-field :dense="true" outlined>
+          <template v-slot:control>
+            <div class="self-center full-width no-outline" tabindex="0">{{ orderDetails.numOfPeople }}</div>
+          </template>
+        </q-field>
+      </div>
+      <div class="q-pa-md row flex items-baseline">
+        <P>עלות משתתף : </P>
+        <q-field :dense="true" outlined suffix="₪">
+          <template v-slot:control>
+            <div class="self-center full-width no-outline" tabindex="0">{{ orderDetails.pricePerHead }}</div>
+          </template>
+        </q-field>
+      </div>
+      <div class="q-pa-md row flex items-baseline">
+        <P>עלות כוללת : </P>
+        <q-field :dense="true" outlined suffix="₪">
+          <template v-slot:control>
+            <div class="self-center full-width no-outline" tabindex="0">
+              {{ orderDetails.pricePerHead * orderDetails.numOfPeople }}
+            </div>
+          </template>
+        </q-field>
+      </div>
       <q-btn class="confirm-btn" label="אישור ומעבר לתשלום" @click="SendToPayment()"></q-btn>
     </div>
   </q-page-container>
@@ -22,10 +56,15 @@ export default {
     return {}
   },
   computed: {
-    ...mapState('payment', ['allPayments', 'payDetails'])
+    ...mapState('payment', ['allPayments', 'payDetails']),
+    ...mapState('order', ['orderDetails']),
+    dateToShortString() {
+      return this.orderDetails.date.toLocaleString('he-IL', {dateStyle: 'short'})},
   },
   methods: {
-    SendToPayment() {
+    ...mapActions('order', ['CheckingOrderWithDB']),
+    async SendToPayment() {
+      await this.CheckingOrderWithDB()
       this.$router.push('/payment')
     }
   }
@@ -40,7 +79,7 @@ export default {
   transform: translateY(-50%);
   display: grid;
   grid-template-rows:repeat(auto-fill, auto);
-  grid-gap: 15px
+  grid-gap: 7px
 }
 
 .confirm-btn {

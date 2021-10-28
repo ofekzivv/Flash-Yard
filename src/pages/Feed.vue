@@ -18,7 +18,7 @@ export default {
   name: "Feed",
   components: {YardCard, InfiniteLoading},
   computed: {
-    ...mapState('yards', ['yards', 'yardsCount','foodCatOpt'])
+    ...mapState('yards', ['yards', 'yardsCount', 'foodCatOpt'])
   },
   data() {
     return {
@@ -28,7 +28,7 @@ export default {
   },
 
   methods: {
-    ...mapActions('yards', ['readYards','getFoodCategory']),
+    ...mapActions('yards', ['readYards', 'getFoodCategory']),
 
     /***********************loadData*****************
      *load all yards and show them in the feed      *
@@ -59,11 +59,10 @@ export default {
       return $state.complete()
     }
   },
- //todo fix get error 404
+  //todo fix get error 404
   created() {
-    if(!this.foodCatOpt.length)
+    if (!this.foodCatOpt.length)
       this.getFoodCategory()
-    debugger
     this.myYards = [...this.yards]
   }
 

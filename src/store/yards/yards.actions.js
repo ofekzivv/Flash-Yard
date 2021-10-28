@@ -19,7 +19,7 @@ export default {
     const yard={}
     Object.assign(yard,state.editedYard)
     delete yard.id
-    await FS_Yards.updateYard(yard)
+    await FS_Yards.updateYard(yard,state.editedYard.id)
     commit('editYard')
     dispatch('reset')
   },
@@ -41,7 +41,7 @@ export default {
     await FS_Yards.createYard(yard,state.editedYard.id)
     console.log('after push to DB')
     //save to store
-     await commit('insertYard')
+     await commit('insertYard',yard)
     console.log('after update  yards state')
     dispatch('reset')
   },
