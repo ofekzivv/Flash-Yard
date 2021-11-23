@@ -21,6 +21,7 @@
       <component v-if="dialog" :is="checkWhichComponentToOpen(trueDay)" v-bind="{day:trueDay}"
                  @closeDialog="falseDialog"></component>
     </q-dialog>
+
     <div>
       <q-btn color="primary" label="צא ללא שמירה" @click="exitUnsaved()"/>
       <q-btn color="primary" label="שמור  שינויים" @click="saveChanges()"/>
